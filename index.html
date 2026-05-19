@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>冷蔵庫食材管理・賞味期限トラッカー｜食品ロスをゼロにする無料アプリ</title>
+    <meta name="description" content="冷蔵庫の食材を無料で管理。賞味期限が近い食材を自動警告。食材から使えるレシピ候補を提案。買い物リスト生成機能付き。登録不要でスマホに保存。">
+    <meta name="keywords" content="冷蔵庫,食材管理,賞味期限,食品ロス,無料,アプリ,買い物リスト,レシピ">
+    <link rel="canonical" href="https://appadaycreator.github.io/fridge-tracker/">
+    <meta property="og:title" content="冷蔵庫食材管理・賞味期限トラッカー｜食品ロスをゼロにする無料アプリ">
+    <meta property="og:description" content="冷蔵庫の食材を管理して食品ロスをゼロに。賞味期限警告・レシピ提案・買い物リスト機能付き。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://appadaycreator.github.io/fridge-tracker/">
+    <meta property="og:image" content="https://appadaycreator.github.io/assets/ogp-default.png">
+    <meta property="og:site_name" content="冷蔵庫食材管理・賞味期限トラッカー">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="冷蔵庫食材管理・賞味期限トラッカー">
+    <meta name="twitter:description" content="冷蔵庫の食材を管理して食品ロスをゼロに。賞味期限警告・買い物リスト機能付き。">
+    <meta name="twitter:image" content="https://appadaycreator.github.io/assets/ogp-default.png">
+    <!-- GTM -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TXQGZRF9');</script>
+    <!-- Clarity -->
+    <script>(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","s3t9vl8h3v");</script>
+    <!-- AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8427583028015858" crossorigin="anonymous"></script>
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"WebApplication","name":"冷蔵庫食材管理・賞味期限トラッカー","url":"https://appadaycreator.github.io/fridge-tracker/","description":"冷蔵庫の食材を無料で管理。賞味期限警告・レシピ提案・買い物リスト生成機能付き。","applicationCategory":"LifestyleApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"}}
+    </script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --surface-hover: #f8fafc;
+            --border: rgba(15,23,42,0.08);
+            --shadow-sm: 0 1px 3px rgba(15,23,42,0.08), 0 1px 2px rgba(15,23,42,0.04);
+            --shadow-md: 0 4px 16px rgba(15,23,42,0.08), 0 2px 6px rgba(15,23,42,0.04);
+            --shadow-lg: 0 12px 40px rgba(15,23,42,0.12), 0 4px 12px rgba(15,23,42,0.06);
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --primary-light: #d1fae5;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --text: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --radius: 16px;
+            --radius-sm: 10px;
+            --radius-lg: 24px;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter', 'Hiragino Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* ===== Header ===== */
+        .app-header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 20px 24px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px);
+            background: rgba(255,255,255,0.9);
+        }
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 640px;
+            margin: 0 auto 20px;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo-icon {
+            width: 38px; height: 38px;
+            background: var(--primary);
+            border-radius: var(--radius-sm);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: 0 2px 8px rgba(16,185,129,0.3);
+        }
+        .logo-text { font-size: 1rem; font-weight: 700; color: var(--text); }
+        .logo-sub { font-size: 0.72rem; color: var(--text-muted); }
+        .btn-add-header {
+            display: flex; align-items: center; gap: 6px;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-sm);
+            padding: 10px 18px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.15s ease-out, box-shadow 0.15s ease-out, background 0.15s;
+            box-shadow: 0 2px 8px rgba(16,185,129,0.35);
+        }
+        .btn-add-header:hover {
+            transform: scale(1.03);
+            background: var(--primary-dark);
+            box-shadow: 0 4px 16px rgba(16,185,129,0.4);
+        }
+
+        /* ===== Stats Bar ===== */
+        .stats-bar {
+            display: flex;
+            gap: 12px;
+            max-width: 640px;
+            margin: 0 auto 0;
+            padding-bottom: 18px;
+            overflow-x: auto;
+        }
+        .stat-pill {
+            display: flex; align-items: center; gap: 6px;
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: transform 0.15s ease-out, opacity 0.15s;
+            border: 1.5px solid transparent;
+        }
+        .stat-pill:hover { transform: scale(1.04); opacity: 0.9; }
+        .stat-pill.all { background: #f1f5f9; color: var(--text-secondary); border-color: var(--border); }
+        .stat-pill.all.active { background: var(--text); color: #fff; border-color: var(--text); }
+        .stat-pill.danger { background: #fef2f2; color: var(--danger); border-color: #fecaca; }
+        .stat-pill.danger.active { background: var(--danger); color: #fff; border-color: var(--danger); }
+        .stat-pill.warning { background: #fffbeb; color: #92400e; border-color: #fde68a; }
+        .stat-pill.warning.active { background: var(--warning); color: #fff; border-color: var(--warning); }
+        .stat-pill.safe { background: var(--primary-light); color: var(--primary-dark); border-color: #6ee7b7; }
+        .stat-pill.safe.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+        .stat-dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+
+        /* ===== Main ===== */
+        .main { max-width: 640px; margin: 0 auto; padding: 28px 20px 100px; }
+
+        /* ===== Nav Tabs ===== */
+        .nav-tabs {
+            display: flex; gap: 4px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 4px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-sm);
+        }
+        .nav-tab {
+            flex: 1; padding: 9px 12px;
+            border: none; background: none;
+            border-radius: 8px;
+            font-size: 0.82rem; font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s ease-out;
+            display: flex; align-items: center; justify-content: center; gap: 5px;
+        }
+        .nav-tab:hover { color: var(--text-secondary); background: var(--surface-hover); }
+        .nav-tab.active {
+            background: var(--text);
+            color: #fff;
+            box-shadow: var(--shadow-sm);
+        }
+        .panel { display: none; }
+        .panel.active { display: block; }
+
+        /* ===== Food Cards ===== */
+        .food-grid { display: grid; gap: 12px; }
+        .food-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 18px 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            cursor: pointer;
+            transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            overflow: hidden;
+        }
+        .food-card::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 4px;
+            border-radius: 4px 0 0 4px;
+        }
+        .food-card.expired::before { background: var(--danger); }
+        .food-card.soon::before { background: var(--warning); }
+        .food-card.ok::before { background: var(--primary); }
+        .food-card:hover { transform: translateY(-2px) scale(1.005); box-shadow: var(--shadow-md); }
+        .food-emoji {
+            width: 48px; height: 48px;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+        .food-emoji.expired { background: #fef2f2; }
+        .food-emoji.soon { background: #fffbeb; }
+        .food-emoji.ok { background: var(--primary-light); }
+        .food-info { flex: 1; min-width: 0; }
+        .food-name { font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+        .food-meta { font-size: 0.78rem; color: var(--text-muted); display: flex; align-items: center; gap: 8px; }
+        .food-qty { font-size: 0.78rem; color: var(--text-secondary); font-weight: 500; }
+        .expiry-badge {
+            padding: 4px 10px; border-radius: 100px;
+            font-size: 0.72rem; font-weight: 700;
+            white-space: nowrap; flex-shrink: 0;
+        }
+        .expiry-badge.expired { background: #fef2f2; color: var(--danger); }
+        .expiry-badge.today { background: #fee2e2; color: #b91c1c; }
+        .expiry-badge.soon { background: #fffbeb; color: #92400e; }
+        .expiry-badge.ok { background: var(--primary-light); color: var(--primary-dark); }
+        .btn-del-card {
+            width: 28px; height: 28px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.9rem;
+            transition: all 0.15s ease-out;
+            flex-shrink: 0;
+        }
+        .btn-del-card:hover { background: #fee2e2; color: var(--danger); border-color: #fecaca; transform: scale(1.08); }
+
+        /* ===== Empty State ===== */
+        .empty-state {
+            text-align: center;
+            padding: 64px 32px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+        }
+        .empty-icon { font-size: 3.5rem; margin-bottom: 16px; display: block; }
+        .empty-title { font-size: 1.1rem; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+        .empty-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.7; }
+
+        /* ===== Modal Overlay ===== */
+        .modal-overlay {
+            position: fixed; inset: 0;
+            background: rgba(15,23,42,0.5);
+            backdrop-filter: blur(4px);
+            z-index: 200;
+            display: none;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 0;
+        }
+        .modal-overlay.open { display: flex; }
+        .modal {
+            background: var(--surface);
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            padding: 32px 24px 40px;
+            width: 100%;
+            max-width: 640px;
+            box-shadow: var(--shadow-lg);
+            animation: slideUp 0.25s ease-out;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .modal-handle {
+            width: 40px; height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            margin: 0 auto 24px;
+        }
+        .modal-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 20px; }
+
+        /* ===== Form ===== */
+        .form-group { margin-bottom: 16px; }
+        .form-label { font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px; display: block; }
+        .form-input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 0.9rem;
+            font-family: inherit;
+            color: var(--text);
+            background: var(--surface);
+            transition: border-color 0.15s, box-shadow 0.15s;
+            outline: none;
+        }
+        .form-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(16,185,129,0.12); }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .cat-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; }
+        .cat-btn {
+            border: 1.5px solid var(--border);
+            background: var(--surface);
+            border-radius: var(--radius-sm);
+            padding: 10px 4px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: all 0.15s ease-out;
+        }
+        .cat-btn:hover { border-color: var(--primary); color: var(--primary-dark); transform: scale(1.04); }
+        .cat-btn.selected { border-color: var(--primary); background: var(--primary-light); color: var(--primary-dark); }
+        .cat-btn span { font-size: 1.4rem; display: block; margin-bottom: 3px; }
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.15s ease-out, background 0.15s, box-shadow 0.15s;
+            box-shadow: 0 2px 8px rgba(16,185,129,0.3);
+        }
+        .btn-submit:hover { transform: scale(1.02); background: var(--primary-dark); box-shadow: 0 4px 16px rgba(16,185,129,0.4); }
+        .btn-cancel {
+            width: 100%;
+            padding: 13px;
+            background: var(--surface-hover);
+            color: var(--text-secondary);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: all 0.15s ease-out;
+        }
+        .btn-cancel:hover { background: #f1f5f9; }
+
+        /* ===== Section Headers ===== */
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+        .section-title { font-size: 0.88rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; }
+
+        /* ===== Shopping List ===== */
+        .shop-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 18px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            margin-bottom: 8px;
+            transition: all 0.2s ease-out;
+            box-shadow: var(--shadow-sm);
+        }
+        .shop-item:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
+        .shop-check {
+            width: 20px; height: 20px;
+            border-radius: 6px;
+            border: 2px solid var(--border);
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.15s;
+            flex-shrink: 0;
+        }
+        .shop-check.checked { background: var(--primary); border-color: var(--primary); }
+        .shop-check.checked::after { content: '✓'; color: #fff; font-size: 0.75rem; font-weight: 700; }
+        .shop-item-name { flex: 1; font-size: 0.88rem; font-weight: 500; }
+        .shop-item-name.checked { text-decoration: line-through; color: var(--text-muted); }
+        .shop-item-del { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1rem; padding: 4px; border-radius: 6px; transition: all 0.15s; }
+        .shop-item-del:hover { color: var(--danger); background: #fee2e2; }
+        .shop-add-row { display: flex; gap: 8px; margin-top: 12px; }
+        .shop-add-input { flex: 1; }
+        .btn-shop-add {
+            padding: 10px 18px;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s ease-out;
+            white-space: nowrap;
+        }
+        .btn-shop-add:hover { transform: scale(1.04); background: var(--primary-dark); }
+
+        /* ===== Recipe Suggestions ===== */
+        .recipe-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 18px 20px;
+            margin-bottom: 12px;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s ease-out;
+            cursor: pointer;
+        }
+        .recipe-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+        .recipe-name { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; }
+        .recipe-ingredients { font-size: 0.78rem; color: var(--text-muted); display: flex; flex-wrap: wrap; gap: 6px; }
+        .ingredient-tag {
+            padding: 2px 8px;
+            border-radius: 100px;
+            font-size: 0.72rem;
+            font-weight: 600;
+        }
+        .ingredient-tag.have { background: var(--primary-light); color: var(--primary-dark); }
+        .ingredient-tag.need { background: #f1f5f9; color: var(--text-secondary); }
+
+        /* ===== Amazon ===== */
+        .amazon-section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+        }
+        .amazon-title { font-size: 0.82rem; font-weight: 700; color: var(--text-secondary); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+        .amazon-links { display: flex; flex-wrap: wrap; gap: 8px; }
+        .amz-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 9px 16px;
+            background: #fff9f0;
+            border: 1.5px solid #fde68a;
+            border-radius: var(--radius-sm);
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #92400e;
+            transition: all 0.15s ease-out;
+        }
+        .amz-link:hover { transform: scale(1.04); background: #fff3d4; box-shadow: 0 2px 8px rgba(245,158,11,0.2); }
+
+        /* ===== Notification ===== */
+        .toast {
+            position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px);
+            background: var(--text); color: #fff;
+            padding: 12px 20px;
+            border-radius: var(--radius-sm);
+            font-size: 0.84rem;
+            font-weight: 600;
+            opacity: 0;
+            transition: all 0.3s ease-out;
+            z-index: 300;
+            box-shadow: var(--shadow-lg);
+            pointer-events: none;
+        }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    </style>
+</head>
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TXQGZRF9" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<!-- Header -->
+<header class="app-header">
+    <div class="header-top">
+        <div class="logo">
+            <div class="logo-icon">🧊</div>
+            <div>
+                <div class="logo-text">FridgeTracker</div>
+                <div class="logo-sub">冷蔵庫食材管理</div>
+            </div>
+        </div>
+        <button class="btn-add-header" onclick="openModal()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+            食材を追加
+        </button>
+    </div>
+    <div class="stats-bar" id="stats-bar"></div>
+</header>
+
+<!-- Main -->
+<main class="main">
+    <!-- Nav Tabs -->
+    <div class="nav-tabs">
+        <button class="nav-tab active" onclick="switchTab('fridge',this)">
+            <span>🧊</span> 冷蔵庫
+        </button>
+        <button class="nav-tab" onclick="switchTab('recipe',this)">
+            <span>👨‍🍳</span> レシピ
+        </button>
+        <button class="nav-tab" onclick="switchTab('shop',this)">
+            <span>🛒</span> 買い物
+        </button>
+        <button class="nav-tab" onclick="switchTab('goods',this)">
+            <span>📦</span> グッズ
+        </button>
+    </div>
+
+    <!-- 冷蔵庫パネル -->
+    <div id="panel-fridge" class="panel active">
+        <div id="fridge-content"></div>
+    </div>
+
+    <!-- レシピパネル -->
+    <div id="panel-recipe" class="panel">
+        <div id="recipe-content"></div>
+    </div>
+
+    <!-- 買い物リストパネル -->
+    <div id="panel-shop" class="panel">
+        <div class="section-header">
+            <span class="section-title">買い物リスト</span>
+            <button onclick="clearChecked()" style="font-size:0.78rem;color:var(--text-muted);background:none;border:none;cursor:pointer;padding:4px 8px;border-radius:6px;transition:all .15s;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='none'">チェック済みを削除</button>
+        </div>
+        <div id="shop-list"></div>
+        <div class="shop-add-row">
+            <input type="text" class="form-input shop-add-input" id="shop-input" placeholder="品名を入力して追加" maxlength="30" onkeypress="if(event.key==='Enter')addShopItem()">
+            <button class="btn-shop-add" onclick="addShopItem()">追加</button>
+        </div>
+    </div>
+
+    <!-- グッズパネル -->
+    <div id="panel-goods" class="panel">
+        <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:16px;">食材の鮮度を保つおすすめグッズ</p>
+        <div class="amazon-section">
+            <div class="amazon-title">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                Amazonで見る
+            </div>
+            <div class="amazon-links">
+                <a href="https://www.amazon.co.jp/s?k=食材保存袋+ジップロック&tag=appadaycrea0f-22" target="_blank" rel="noopener noreferrer" class="amz-link js-track-affiliate" data-platform="Amazon" data-item-name="食材保存袋" data-link-type="affiliate_link">🫙 食材保存袋</a>
+                <a href="https://www.amazon.co.jp/s?k=冷蔵庫収納ケース+整理&tag=appadaycrea0f-22" target="_blank" rel="noopener noreferrer" class="amz-link js-track-affiliate" data-platform="Amazon" data-item-name="冷蔵庫収納ケース" data-link-type="affiliate_link">📦 冷蔵庫収納</a>
+                <a href="https://www.amazon.co.jp/s?k=真空保存容器+フードセーバー&tag=appadaycrea0f-22" target="_blank" rel="noopener noreferrer" class="amz-link js-track-affiliate" data-platform="Amazon" data-item-name="真空保存容器" data-link-type="affiliate_link">🔒 真空保存容器</a>
+                <a href="https://www.amazon.co.jp/s?k=エチレンガス吸収材+野菜長持ち&tag=appadaycrea0f-22" target="_blank" rel="noopener noreferrer" class="amz-link js-track-affiliate" data-platform="Amazon" data-item-name="野菜鮮度保持グッズ" data-link-type="affiliate_link">🥦 野菜鮮度保持</a>
+                <a href="https://www.amazon.co.jp/s?k=食材管理+ラベル+シール&tag=appadaycrea0f-22" target="_blank" rel="noopener noreferrer" class="amz-link js-track-affiliate" data-platform="Amazon" data-item-name="食材管理ラベル" data-link-type="affiliate_link">🏷️ 食材管理ラベル</a>
+                <a href="https://www.amazon.co.jp/s?k=食品ロス削減+本+レシピ&tag=appadaycrea0f-22" target="_blank" rel="noopener noreferrer" class="amz-link js-track-affiliate" data-platform="Amazon" data-item-name="食品ロス削減レシピ本" data-link-type="affiliate_link">📗 食品ロス削減本</a>
+            </div>
+        </div>
+        <div style="margin-top:16px;padding:16px;background:var(--primary-light);border-radius:var(--radius);border:1px solid #6ee7b7;">
+            <p style="font-size:0.82rem;font-weight:600;color:var(--primary-dark);margin-bottom:4px;">🍽️ 残り食材でレシピを探す</p>
+            <a href="https://appadaycreator.github.io/pantry-chef/" style="font-size:0.8rem;color:var(--primary-dark);font-weight:500;">→ AIレシピ提案アプリで使い切りレシピを検索</a>
+        </div>
+    </div>
+</main>
+
+<!-- Add Modal -->
+<div class="modal-overlay" id="modal-overlay" onclick="if(event.target===this)closeModal()">
+    <div class="modal">
+        <div class="modal-handle"></div>
+        <div class="modal-title" id="modal-title">食材を追加</div>
+        <input type="hidden" id="edit-id">
+        <div class="form-group">
+            <label class="form-label">カテゴリ</label>
+            <div class="cat-grid" id="cat-grid"></div>
+        </div>
+        <div class="form-group">
+            <label class="form-label">食材名</label>
+            <input type="text" class="form-input" id="f-name" placeholder="例: 卵、にんじん、牛乳" maxlength="30" required>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label class="form-label">数量・単位</label>
+                <input type="text" class="form-input" id="f-qty" placeholder="例: 6個、1パック" maxlength="15">
+            </div>
+            <div class="form-group">
+                <label class="form-label">賞味期限</label>
+                <input type="date" class="form-input" id="f-expiry">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-label">保存場所</label>
+            <select class="form-input" id="f-location">
+                <option value="冷蔵">冷蔵室</option>
+                <option value="野菜室">野菜室</option>
+                <option value="冷凍">冷凍庫</option>
+                <option value="常温">常温</option>
+            </select>
+        </div>
+        <button class="btn-submit" onclick="saveFood()">保存する</button>
+        <button class="btn-cancel" onclick="closeModal()">キャンセル</button>
+    </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+const STORE = 'fridge_v1';
+const SHOP_STORE = 'fridge_shop_v1';
+
+const CATEGORIES = [
+    { id: 'veg', label: '野菜', emoji: '🥦' },
+    { id: 'meat', label: '肉類', emoji: '🥩' },
+    { id: 'fish', label: '魚介', emoji: '🐟' },
+    { id: 'dairy', label: '乳製品', emoji: '🥛' },
+    { id: 'egg', label: '卵', emoji: '🥚' },
+    { id: 'fruit', label: '果物', emoji: '🍎' },
+    { id: 'seasoning', label: '調味料', emoji: '🧂' },
+    { id: 'frozen', label: '冷凍食品', emoji: '🧊' },
+    { id: 'drink', label: '飲み物', emoji: '🧃' },
+    { id: 'bread', label: 'パン・麺', emoji: '🍞' },
+    { id: 'snack', label: 'お菓子', emoji: '🍫' },
+    { id: 'other', label: 'その他', emoji: '🫙' },
+];
+
+const RECIPES = [
+    { name: '野菜炒め', needs: ['veg', 'meat'], label: '野菜と肉があれば' },
+    { name: 'オムレツ', needs: ['egg', 'dairy'], label: '卵と乳製品で' },
+    { name: '魚の塩焼き', needs: ['fish', 'seasoning'], label: '魚と調味料で' },
+    { name: 'サラダ', needs: ['veg', 'fruit'], label: '野菜・果物で' },
+    { name: '炒飯', needs: ['egg', 'veg', 'meat'], label: '卵・野菜・肉で' },
+    { name: 'スムージー', needs: ['fruit', 'dairy'], label: '果物と乳製品で' },
+    { name: 'シチュー', needs: ['meat', 'veg', 'dairy'], label: '肉・野菜・乳製品で' },
+    { name: '魚介のパスタ', needs: ['fish', 'bread', 'seasoning'], label: '魚介・麺・調味料で' },
+];
+
+let selectedCat = 'veg';
+let activeFilter = 'all';
+
+function getFoods() { try { return JSON.parse(localStorage.getItem(STORE)||'[]'); } catch(e){return[];} }
+function setFoods(d) { try { localStorage.setItem(STORE, JSON.stringify(d)); } catch(e){} }
+function getShop() { try { return JSON.parse(localStorage.getItem(SHOP_STORE)||'[]'); } catch(e){return[];} }
+function setShop(d) { try { localStorage.setItem(SHOP_STORE, JSON.stringify(d)); } catch(e){} }
+
+function daysUntil(dateStr) {
+    if (!dateStr) return 999;
+    const today = new Date(); today.setHours(0,0,0,0);
+    const exp = new Date(dateStr);
+    return Math.round((exp - today) / 86400000);
+}
+
+function expiryStatus(days) {
+    if (days < 0) return 'expired';
+    if (days === 0) return 'today';
+    if (days <= 3) return 'soon';
+    return 'ok';
+}
+
+function expiryLabel(days, dateStr) {
+    if (!dateStr) return '期限未設定';
+    if (days < 0) return `${Math.abs(days)}日超過`;
+    if (days === 0) return '本日期限';
+    if (days <= 3) return `あと${days}日`;
+    return `あと${days}日`;
+}
+
+function buildCatGrid() {
+    const grid = document.getElementById('cat-grid');
+    grid.innerHTML = CATEGORIES.map(c => `
+        <button class="cat-btn ${c.id === selectedCat ? 'selected' : ''}" onclick="selectCat('${c.id}',this)">
+            <span>${c.emoji}</span>${c.label}
+        </button>`).join('');
+}
+
+function selectCat(id, el) {
+    selectedCat = id;
+    document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('selected'));
+    el.classList.add('selected');
+}
+
+function openModal(editId) {
+    document.getElementById('edit-id').value = editId || '';
+    document.getElementById('modal-title').textContent = editId ? '食材を編集' : '食材を追加';
+    if (editId) {
+        const food = getFoods().find(f => f.id === editId);
+        if (food) {
+            selectedCat = food.cat;
+            document.getElementById('f-name').value = food.name;
+            document.getElementById('f-qty').value = food.qty || '';
+            document.getElementById('f-expiry').value = food.expiry || '';
+            document.getElementById('f-location').value = food.location || '冷蔵';
+        }
+    } else {
+        selectedCat = 'veg';
+        document.getElementById('f-name').value = '';
+        document.getElementById('f-qty').value = '';
+        document.getElementById('f-expiry').value = '';
+        document.getElementById('f-location').value = '冷蔵';
+        // 今日+7日をデフォルト
+        const d = new Date(); d.setDate(d.getDate() + 7);
+        document.getElementById('f-expiry').value = d.toISOString().slice(0,10);
+    }
+    buildCatGrid();
+    document.getElementById('modal-overlay').classList.add('open');
+}
+
+function closeModal() {
+    document.getElementById('modal-overlay').classList.remove('open');
+}
+
+function saveFood() {
+    const name = document.getElementById('f-name').value.trim();
+    if (!name) { showToast('食材名を入力してください'); return; }
+    const editId = document.getElementById('edit-id').value;
+    const food = {
+        id: editId || Date.now().toString(),
+        cat: selectedCat,
+        name,
+        qty: document.getElementById('f-qty').value.trim(),
+        expiry: document.getElementById('f-expiry').value,
+        location: document.getElementById('f-location').value,
+        addedAt: new Date().toISOString().slice(0,10),
+    };
+    const foods = getFoods();
+    if (editId) {
+        const i = foods.findIndex(f => f.id === editId);
+        if (i >= 0) foods[i] = food;
+    } else {
+        foods.push(food);
+    }
+    setFoods(foods);
+    closeModal();
+    renderAll();
+    showToast(`${name}を${editId ? '更新' : '追加'}しました`);
+}
+
+function deleteFood(id) {
+    const food = getFoods().find(f => f.id === id);
+    setFoods(getFoods().filter(f => f.id !== id));
+    renderAll();
+    if (food) showToast(`${food.name}を削除しました`);
+}
+
+function renderFridge() {
+    const foods = getFoods();
+    const content = document.getElementById('fridge-content');
+
+    // Stats bar
+    const expired = foods.filter(f => daysUntil(f.expiry) < 0).length;
+    const soon = foods.filter(f => { const d=daysUntil(f.expiry); return d>=0&&d<=3; }).length;
+    const ok = foods.filter(f => daysUntil(f.expiry) > 3).length;
+    document.getElementById('stats-bar').innerHTML = `
+        <button class="stat-pill all ${activeFilter==='all'?'active':''}" onclick="setFilter('all',this)">
+            <span class="stat-dot"></span>全${foods.length}品
+        </button>
+        ${expired > 0 ? `<button class="stat-pill danger ${activeFilter==='expired'?'active':''}" onclick="setFilter('expired',this)">
+            <span class="stat-dot"></span>期限切れ ${expired}
+        </button>` : ''}
+        ${soon > 0 ? `<button class="stat-pill warning ${activeFilter==='soon'?'active':''}" onclick="setFilter('soon',this)">
+            <span class="stat-dot"></span>まもなく期限 ${soon}
+        </button>` : ''}
+        <button class="stat-pill safe ${activeFilter==='ok'?'active':''}" onclick="setFilter('ok',this)">
+            <span class="stat-dot"></span>余裕あり ${ok}
+        </button>`;
+
+    let filtered = foods;
+    if (activeFilter === 'expired') filtered = foods.filter(f => daysUntil(f.expiry) < 0);
+    else if (activeFilter === 'soon') filtered = foods.filter(f => { const d=daysUntil(f.expiry); return d>=0&&d<=3; });
+    else if (activeFilter === 'ok') filtered = foods.filter(f => daysUntil(f.expiry) > 3);
+
+    filtered.sort((a,b) => daysUntil(a.expiry) - daysUntil(b.expiry));
+
+    if (!filtered.length) {
+        content.innerHTML = `<div class="empty-state">
+            <span class="empty-icon">🧊</span>
+            <div class="empty-title">${activeFilter==='all' ? '食材がまだありません' : '該当する食材がありません'}</div>
+            <div class="empty-desc">右上の「食材を追加」ボタンから<br>冷蔵庫の食材を登録してください</div>
+        </div>`;
+        return;
+    }
+
+    const catMap = Object.fromEntries(CATEGORIES.map(c => [c.id, c]));
+    content.innerHTML = `<div class="food-grid">${filtered.map(f => {
+        const days = daysUntil(f.expiry);
+        const status = expiryStatus(days);
+        const cat = catMap[f.cat] || {emoji:'🫙'};
+        return `<div class="food-card ${status==='expired'?'expired':status==='today'||status==='soon'?'soon':'ok'}">
+            <div class="food-emoji ${status==='expired'?'expired':status==='today'||status==='soon'?'soon':'ok'}">${cat.emoji}</div>
+            <div class="food-info">
+                <div class="food-name">${f.name}</div>
+                <div class="food-meta">
+                    ${f.qty ? `<span class="food-qty">${f.qty}</span>` : ''}
+                    <span style="color:var(--text-muted);">${f.location}</span>
+                </div>
+            </div>
+            <span class="expiry-badge ${status}">${expiryLabel(days, f.expiry)}</span>
+            <button class="btn-del-card" onclick="deleteFood('${f.id}')" title="削除">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+        </div>`;
+    }).join('')}</div>`;
+}
+
+function setFilter(filter, el) {
+    activeFilter = filter;
+    renderFridge();
+}
+
+function renderRecipes() {
+    const foods = getFoods();
+    const haveCats = new Set(foods.map(f => f.cat));
+    const content = document.getElementById('recipe-content');
+
+    if (!foods.length) {
+        content.innerHTML = `<div class="empty-state"><span class="empty-icon">👨‍🍳</span><div class="empty-title">食材を登録するとレシピが表示されます</div></div>`;
+        return;
+    }
+
+    const recipes = RECIPES.map(r => {
+        const have = r.needs.filter(n => haveCats.has(n));
+        const need = r.needs.filter(n => !haveCats.has(n));
+        return { ...r, have, need, score: have.length / r.needs.length };
+    }).filter(r => r.score > 0).sort((a,b) => b.score - a.score);
+
+    const catMap = Object.fromEntries(CATEGORIES.map(c => [c.id, c]));
+    content.innerHTML = `
+        <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:16px;">冷蔵庫にある食材から作れるレシピ候補</p>
+        <div>${recipes.map(r => `<div class="recipe-card" onclick="">
+            <div class="recipe-name">${r.name} ${r.score === 1 ? '<span style="font-size:0.72rem;color:var(--primary);margin-left:4px;">✓ 材料揃ってます</span>' : ''}</div>
+            <div class="recipe-ingredients">
+                ${r.have.map(c => `<span class="ingredient-tag have">${catMap[c]?.emoji} ${catMap[c]?.label}</span>`).join('')}
+                ${r.need.map(c => `<span class="ingredient-tag need">${catMap[c]?.emoji} ${catMap[c]?.label} (不足)</span>`).join('')}
+            </div>
+        </div>`).join('')}</div>
+        <div style="margin-top:20px;padding:16px;background:var(--primary-light);border-radius:var(--radius);border:1px solid #6ee7b7;">
+            <p style="font-size:0.82rem;font-weight:700;color:var(--primary-dark);margin-bottom:4px;">🤖 AIが詳細なレシピを提案</p>
+            <a href="https://appadaycreator.github.io/pantry-chef/" style="font-size:0.8rem;color:var(--primary-dark);">→ 冷蔵庫AIレシピ提案アプリを使う</a>
+        </div>`;
+}
+
+function renderShop() {
+    const items = getShop();
+    const list = document.getElementById('shop-list');
+    if (!items.length) {
+        list.innerHTML = `<div style="text-align:center;padding:32px;color:var(--text-muted);font-size:0.85rem;">買い物リストが空です</div>`;
+        return;
+    }
+    list.innerHTML = items.map(item => `<div class="shop-item">
+        <div class="shop-check ${item.checked?'checked':''}" onclick="toggleShopItem('${item.id}')"></div>
+        <span class="shop-item-name ${item.checked?'checked':''}">${item.name}</span>
+        <button class="shop-item-del" onclick="deleteShopItem('${item.id}')">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+    </div>`).join('');
+}
+
+function addShopItem() {
+    const input = document.getElementById('shop-input');
+    const name = input.value.trim();
+    if (!name) return;
+    const items = getShop();
+    items.push({ id: Date.now().toString(), name, checked: false });
+    setShop(items);
+    input.value = '';
+    renderShop();
+}
+
+function toggleShopItem(id) {
+    const items = getShop().map(i => i.id===id ? {...i,checked:!i.checked} : i);
+    setShop(items);
+    renderShop();
+}
+
+function deleteShopItem(id) {
+    setShop(getShop().filter(i => i.id!==id));
+    renderShop();
+}
+
+function clearChecked() {
+    setShop(getShop().filter(i => !i.checked));
+    renderShop();
+}
+
+function renderAll() {
+    renderFridge();
+    renderRecipes();
+    renderShop();
+}
+
+function switchTab(name, el) {
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('panel-'+name).classList.add('active');
+}
+
+function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+document.addEventListener('click', function(e){
+    const el = e.target.closest('.js-track-affiliate');
+    if (!el) return;
+    if (typeof dataLayer !== 'undefined') dataLayer.push({event:'affiliate_click',affiliate_item:el.dataset.itemName,affiliate_platform:el.dataset.platform});
+});
+
+window.onerror = function(msg,src,line){try{console.error('[AppError]',msg,'at',src+':'+line);}catch(e){}return false;};
+window.addEventListener('unhandledrejection',function(e){console.error('[PromiseError]',e.reason);});
+
+document.addEventListener('DOMContentLoaded', function(){
+    renderAll();
+    // デモ用サンプルデータ（初回のみ）
+    if (!getFoods().length) {
+        const today = new Date();
+        const samples = [
+            { id:'s1', cat:'egg', name:'卵', qty:'10個', expiry: new Date(today.getTime()+2*86400000).toISOString().slice(0,10), location:'冷蔵', addedAt:today.toISOString().slice(0,10) },
+            { id:'s2', cat:'veg', name:'にんじん', qty:'2本', expiry: new Date(today.getTime()+5*86400000).toISOString().slice(0,10), location:'野菜室', addedAt:today.toISOString().slice(0,10) },
+            { id:'s3', cat:'dairy', name:'牛乳', qty:'1本', expiry: new Date(today.getTime()-1*86400000).toISOString().slice(0,10), location:'冷蔵', addedAt:today.toISOString().slice(0,10) },
+            { id:'s4', cat:'meat', name:'鶏もも肉', qty:'300g', expiry: new Date(today.getTime()+1*86400000).toISOString().slice(0,10), location:'冷蔵', addedAt:today.toISOString().slice(0,10) },
+        ];
+        setFoods(samples);
+        renderAll();
+    }
+    var l = document.getElementById('page-loader');
+    if(l){l.style.opacity='0';l.style.transition='opacity 0.3s';setTimeout(function(){l.remove();},350);}
+});
+</script>
+
+<div id="page-loader" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#f8fafc;z-index:9999;display:flex;align-items:center;justify-content:center;">
+    <div style="width:36px;height:36px;border:3px solid #d1fae5;border-top-color:#10b981;border-radius:50%;animation:spin-loader 0.7s linear infinite;"></div>
+</div>
+<style>@keyframes spin-loader{to{transform:rotate(360deg)}}</style>
+</body>
+</html>
