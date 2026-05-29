@@ -4,7 +4,7 @@
   "description": "冷蔵庫の食材を無料で管理。賞味期限が近い食材を自動警告。食材から使えるレシピ候補を提案。買い物リスト生成機能付き。登録不要でスマホに保存。",
   "start_url": "/fridge-tracker/",
   "display": "standalone",
-  "background_color": "#ffffff",
+  "background_color": "#10b981",
   "theme_color": "#10b981",
   "lang": "ja",
   "icons": [
