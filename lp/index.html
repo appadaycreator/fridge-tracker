@@ -37,7 +37,7 @@ a{text-decoration:none;color:inherit;}
 /* Hero */
 .hero{position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;}
 .hero-bg{position:absolute;inset:0;background-image:url('../assets/photos/photo_01.jpg');background-size:cover;background-position:center;}
-.hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(105deg,rgba(240,253,244,0.97) 0%,rgba(240,253,244,0.94) 42%,rgba(240,253,244,0.62) 100%);}
+.hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(105deg,rgba(240,253,244,0.96) 0%,rgba(240,253,244,0.83) 40%,rgba(240,253,244,0.32) 100%);}
 .hero-inner{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:80px 24px;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;width:100%;}
 .hero-badges{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;}
 .hero-badge{background:#10b981;color:#fff;padding:4px 14px;border-radius:100px;font-size:0.78rem;font-weight:700;box-shadow:0 2px 8px rgba(16,185,129,0.25);}
@@ -208,6 +208,21 @@ a{text-decoration:none;color:inherit;}
 .social-btn{width:34px;height:34px;background:rgba(255,255,255,0.07);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#94a3b8;font-size:0.85rem;transition:all 0.15s;}
 .social-btn:hover{background:#10b981;color:#fff;}
 
+/* Feature photo in cards */
+.feature-photo{width:100%;aspect-ratio:16/9;border-radius:10px;overflow:hidden;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,0.08);}
+.feature-photo img{width:100%;height:100%;object-fit:cover;transition:transform 0.35s;}
+.feature-card:hover .feature-photo img{transform:scale(1.05);}
+
+/* Users section */
+.users-section{background:#f0fdf4;padding:60px 24px;}
+.users-section-inner{max-width:1180px;margin:0 auto;text-align:center;}
+.users-title{font-size:clamp(1.3rem,2.4vw,1.8rem);font-weight:800;color:#0f172a;margin-bottom:8px;}
+.users-sub{color:#64748b;font-size:0.88rem;margin-bottom:32px;}
+.users-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;}
+.users-grid-item{aspect-ratio:1;border-radius:14px;overflow:hidden;box-shadow:0 4px 14px rgba(0,0,0,0.10);}
+.users-grid-item img{width:100%;height:100%;object-fit:cover;transition:transform 0.35s;}
+.users-grid-item:hover img{transform:scale(1.06);}
+
 /* Responsive */
 @media(max-width:900px){
   .header-nav{display:none;}
@@ -229,6 +244,7 @@ a{text-decoration:none;color:inherit;}
   .pain-grid{grid-template-columns:1fr;}
   .features-grid{grid-template-columns:1fr;}
   .extras-grid{grid-template-columns:repeat(2,1fr);}
+  .users-grid{grid-template-columns:repeat(3,1fr);}
 }
 </style>
 </head>
@@ -410,31 +426,37 @@ a{text-decoration:none;color:inherit;}
     </div>
     <div class="features-grid">
       <div class="feature-card">
+        <div class="feature-photo"><img src="../assets/photos/photo_07.jpg" alt="バーコードスキャンで食材登録"></div>
         <div class="feature-icon"><img src="../assets/icons/split/01-02.png" alt="バーコード登録"></div>
         <div class="feature-title">バーコードで食材を瞬時に登録</div>
         <div class="feature-desc">スマホのカメラでバーコードをスキャンするだけ。食材名・賞味期限が自動入力されます。登録時間を大幅削減。</div>
       </div>
       <div class="feature-card">
+        <div class="feature-photo"><img src="../assets/photos/photo_02.jpg" alt="AI画像認識で賞味期限を読み取る"></div>
         <div class="feature-icon"><img src="../assets/icons/split/01-03.png" alt="AI画像認識"></div>
         <div class="feature-title">AI画像認識で賞味期限を自動抽出</div>
         <div class="feature-desc">パッケージの賞味期限をカメラで撮影するだけでAIが日付を自動認識。手入力ゼロで管理できます。</div>
       </div>
       <div class="feature-card">
+        <div class="feature-photo"><img src="../assets/photos/photo_03.jpg" alt="賞味期限を色分けで管理"></div>
         <div class="feature-icon"><img src="../assets/icons/split/01-05.png" alt="アラート"></div>
         <div class="feature-title">賞味期限アラートで食品ロス防止</div>
         <div class="feature-desc">期限が近い食材は色分けバッジで一目でわかります。期限切れ前に優先順位を把握して使い切れます。</div>
       </div>
       <div class="feature-card">
+        <div class="feature-photo"><img src="../assets/photos/photo_14.jpg" alt="食材を使ったレシピ提案"></div>
         <div class="feature-icon"><img src="../assets/icons/split/05-02.png" alt="レシピ提案"></div>
         <div class="feature-title">今ある食材でレシピを即提案</div>
         <div class="feature-desc">登録食材と賞味期限を組み合わせて、今日使うべき食材を使い切れるレシピを提案。献立に悩む時間をゼロに。</div>
       </div>
       <div class="feature-card">
+        <div class="feature-photo"><img src="../assets/photos/photo_04.jpg" alt="栄養バランス診断"></div>
         <div class="feature-icon"><img src="../assets/icons/split/03-03.png" alt="栄養バランス"></div>
         <div class="feature-title">栄養バランス診断機能</div>
         <div class="feature-desc">登録した食材の栄養情報を分析して、1週間の栄養バランスを診断。野菜・タンパク質・炭水化物をグラフ表示。</div>
       </div>
       <div class="feature-card">
+        <div class="feature-photo"><img src="../assets/photos/photo_05.jpg" alt="オフラインで冷蔵庫管理"></div>
         <div class="feature-icon"><img src="../assets/icons/split/01-06.png" alt="オフライン"></div>
         <div class="feature-title">オフラインで完全動作</div>
         <div class="feature-desc">通信なしで全機能が使えます。電波が届かない場所でも冷蔵庫管理が可能。データは端末に安全に保存。</div>
@@ -630,15 +652,22 @@ a{text-decoration:none;color:inherit;}
   </div>
 </section>
 
-<!-- Gallery strip 2 -->
-<div class="gallery-strip" style="grid-template-columns:repeat(6,1fr);">
-  <div style="aspect-ratio:1;border-radius:10px;overflow:hidden;"><img src="../assets/photos/photo_20.jpg" alt="" style="width:100%;height:100%;object-fit:cover;"></div>
-  <div style="aspect-ratio:1;border-radius:10px;overflow:hidden;"><img src="../assets/photos/photo_21.jpg" alt="" style="width:100%;height:100%;object-fit:cover;"></div>
-  <div style="aspect-ratio:1;border-radius:10px;overflow:hidden;"><img src="../assets/photos/photo_22.jpg" alt="" style="width:100%;height:100%;object-fit:cover;"></div>
-  <div style="aspect-ratio:1;border-radius:10px;overflow:hidden;"><img src="../assets/photos/photo_02.jpg" alt="" style="width:100%;height:100%;object-fit:cover;"></div>
-  <div style="aspect-ratio:1;border-radius:10px;overflow:hidden;"><img src="../assets/photos/photo_03.jpg" alt="" style="width:100%;height:100%;object-fit:cover;"></div>
-  <div style="aspect-ratio:1;border-radius:10px;overflow:hidden;"><img src="../assets/photos/photo_04.jpg" alt="" style="width:100%;height:100%;object-fit:cover;"></div>
-</div>
+<!-- Users section -->
+<section class="users-section">
+  <div class="users-section-inner">
+    <div class="sec-label">COMMUNITY</div>
+    <h2 class="users-title">まるごと冷蔵庫のわたしたち</h2>
+    <p class="users-sub">FridgeTrackerで食品ロスを削減・献立を楽しく！みなさんのキッチンライフをご紹介</p>
+    <div class="users-grid">
+      <div class="users-grid-item"><img src="../assets/photos/photo_20.jpg" alt="FridgeTrackerユーザー写真"></div>
+      <div class="users-grid-item"><img src="../assets/photos/photo_21.jpg" alt="FridgeTrackerユーザー写真"></div>
+      <div class="users-grid-item"><img src="../assets/photos/photo_22.jpg" alt="FridgeTrackerユーザー写真"></div>
+      <div class="users-grid-item"><img src="../assets/photos/photo_15.jpg" alt="FridgeTrackerユーザー写真"></div>
+      <div class="users-grid-item"><img src="../assets/photos/photo_16.jpg" alt="FridgeTrackerユーザー写真"></div>
+      <div class="users-grid-item"><img src="../assets/photos/photo_11.jpg" alt="FridgeTrackerユーザー写真"></div>
+    </div>
+  </div>
+</section>
 
 <!-- FAQ -->
 <section class="sec" id="faq" style="background:#f8fafc;">
