@@ -37,24 +37,40 @@ a{text-decoration:none;color:inherit;}
 /* Hero */
 .hero{position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;}
 .hero-bg{position:absolute;inset:0;background-image:url('../assets/photos/photo_01.jpg');background-size:cover;background-position:center;}
-.hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,0,0,0.68) 0%,rgba(5,30,15,0.55) 100%);}
+.hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(105deg,rgba(240,253,244,0.97) 0%,rgba(240,253,244,0.94) 42%,rgba(240,253,244,0.62) 100%);}
 .hero-inner{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:80px 24px;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;width:100%;}
 .hero-badges{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;}
-.hero-badge{background:rgba(16,185,129,0.85);color:#fff;padding:4px 14px;border-radius:100px;font-size:0.78rem;font-weight:700;backdrop-filter:blur(4px);}
-.hero-badge.amber{background:rgba(245,158,11,0.85);}
-.hero-text h1{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:800;color:#fff;line-height:1.3;margin-bottom:18px;}
-.hero-text h1 em{color:#4ade80;font-style:normal;}
-.hero-sub{font-size:0.97rem;color:rgba(255,255,255,0.85);margin-bottom:32px;line-height:1.8;}
+.hero-badge{background:#10b981;color:#fff;padding:4px 14px;border-radius:100px;font-size:0.78rem;font-weight:700;box-shadow:0 2px 8px rgba(16,185,129,0.25);}
+.hero-badge.amber{background:#f59e0b;}
+.hero-text h1{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:800;color:#0f172a;line-height:1.3;margin-bottom:18px;}
+.hero-text h1 em{color:#059669;font-style:normal;}
+.hero-sub{font-size:0.97rem;color:#475569;margin-bottom:32px;line-height:1.8;}
 .hero-btns{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:36px;}
 .btn-primary{display:inline-flex;align-items:center;gap:8px;background:#10b981;color:#fff;padding:14px 32px;border-radius:100px;font-weight:700;font-size:1rem;transition:all 0.2s;box-shadow:0 6px 20px rgba(16,185,129,0.4);}
 .btn-primary:hover{background:#059669;transform:translateY(-2px);box-shadow:0 8px 28px rgba(16,185,129,0.5);}
 .btn-outline-white{display:inline-flex;align-items:center;gap:8px;background:transparent;color:#fff;padding:13px 28px;border-radius:100px;font-weight:600;font-size:0.95rem;border:2px solid rgba(255,255,255,0.6);transition:all 0.2s;}
 .btn-outline-white:hover{background:rgba(255,255,255,0.12);border-color:#fff;}
+.btn-outline-green{display:inline-flex;align-items:center;gap:8px;background:transparent;color:#059669;padding:13px 28px;border-radius:100px;font-weight:600;font-size:0.95rem;border:2px solid #10b981;transition:all 0.2s;}
+.btn-outline-green:hover{background:#f0fdf4;border-color:#059669;}
 .hero-stats{display:flex;gap:22px;flex-wrap:wrap;}
-.hero-stat{display:flex;align-items:center;gap:6px;color:rgba(255,255,255,0.85);font-size:0.83rem;}
-.hero-stat strong{color:#fff;font-weight:700;}
+.hero-stat{display:flex;align-items:center;gap:6px;color:#475569;font-size:0.83rem;}
+.hero-stat strong{color:#0f172a;font-weight:700;}
 .hero-mockup{display:flex;justify-content:center;align-items:center;}
-.phone-frame{width:270px;background:#1a1a2e;border-radius:38px;padding:10px;box-shadow:0 28px 80px rgba(0,0,0,0.55),0 0 0 2px rgba(255,255,255,0.08);}
+.hero-devices{display:flex;align-items:flex-end;gap:18px;justify-content:center;}
+.phone-frame{width:300px;background:#1a1a2e;border-radius:38px;padding:10px;box-shadow:0 28px 80px rgba(0,0,0,0.28),0 0 0 2px rgba(0,0,0,0.08);}
+.tablet-card{width:200px;background:#fff;border-radius:22px;padding:16px 14px;box-shadow:0 18px 56px rgba(0,0,0,0.14),0 0 0 1px rgba(0,0,0,0.05);flex-shrink:0;margin-bottom:20px;}
+.tablet-card-head{display:flex;align-items:center;gap:7px;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid #f1f5f9;}
+.tablet-card-head-icon{width:24px;height:24px;background:#10b981;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.7rem;color:#fff;}
+.tablet-card-head-title{font-size:0.72rem;font-weight:700;color:#0f172a;}
+.tablet-recipe-img{width:100%;aspect-ratio:16/9;border-radius:9px;overflow:hidden;margin-bottom:8px;}
+.tablet-recipe-img img{width:100%;height:100%;object-fit:cover;}
+.tablet-recipe-name{font-size:0.68rem;font-weight:700;color:#065f46;margin-bottom:2px;}
+.tablet-recipe-tag{display:inline-block;background:#d1fae5;color:#059669;border-radius:100px;font-size:0.56rem;font-weight:700;padding:2px 7px;margin-bottom:8px;}
+.tablet-mini-list{display:flex;flex-direction:column;gap:5px;}
+.tablet-mini-item{display:flex;align-items:center;gap:6px;background:#f8fafc;border-radius:6px;padding:5px 7px;}
+.tablet-mini-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.tablet-mini-text{font-size:0.6rem;color:#475569;flex:1;}
+.tablet-mini-badge{font-size:0.52rem;font-weight:700;padding:1px 5px;border-radius:100px;}
 .phone-notch{width:90px;height:24px;background:#1a1a2e;border-radius:0 0 18px 18px;margin:0 auto 6px;position:relative;z-index:2;}
 .phone-screen{background:#f8fafc;border-radius:26px;overflow:hidden;min-height:440px;}
 .phone-screen-header{background:#10b981;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;}
@@ -84,7 +100,7 @@ a{text-decoration:none;color:inherit;}
 .sec-title{font-size:clamp(1.5rem,2.8vw,2.1rem);font-weight:800;text-align:center;margin-bottom:50px;color:#0f172a;}
 
 /* Pain section */
-.pain-section{background:#f8fafc;}
+.pain-section{background:#f0fdf4;}
 .pain-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;max-width:780px;margin:0 auto 40px;}
 .pain-card{background:#fff;border-radius:16px;padding:22px;box-shadow:0 2px 12px rgba(0,0,0,0.06);display:flex;gap:14px;align-items:flex-start;}
 .pain-emoji{width:46px;height:46px;flex-shrink:0;border-radius:12px;background:#fee2e2;display:flex;align-items:center;justify-content:center;font-size:1.4rem;}
@@ -159,9 +175,11 @@ a{text-decoration:none;color:inherit;}
 .t-role{font-size:0.73rem;color:#64748b;}
 
 /* Final CTA */
-.final-cta{position:relative;padding:80px 24px;overflow:hidden;background:#10b981;}
+.final-cta{position:relative;padding:88px 24px;overflow:hidden;background:#047857;}
 .final-cta-bg-img{position:absolute;right:0;top:0;bottom:0;width:42%;overflow:hidden;}
-.final-cta-bg-img img{width:100%;height:100%;object-fit:cover;opacity:0.28;}
+.final-cta-bg-img img{width:100%;height:100%;object-fit:cover;opacity:0.42;}
+.final-cta-bg-left{position:absolute;left:0;top:0;bottom:0;width:30%;overflow:hidden;}
+.final-cta-bg-left img{width:100%;height:100%;object-fit:cover;opacity:0.32;}
 .final-cta-inner{position:relative;z-index:1;max-width:700px;margin:0 auto;text-align:center;}
 .final-cta h2{font-size:clamp(1.6rem,3vw,2.4rem);font-weight:800;color:#fff;margin-bottom:12px;}
 .final-cta p{color:rgba(255,255,255,0.9);font-size:0.97rem;margin-bottom:30px;}
@@ -201,6 +219,9 @@ a{text-decoration:none;color:inherit;}
   .footer-top{flex-direction:column;gap:28px;}
   .footer-brand{flex:none;}
   .footer-links-row{flex-wrap:wrap;gap:24px;}
+}
+@media(max-width:900px){
+  .tablet-card{display:none;}
 }
 @media(max-width:640px){
   .hero-inner{grid-template-columns:1fr;}
@@ -246,7 +267,7 @@ a{text-decoration:none;color:inherit;}
       <p class="hero-sub">賞味期限の自動登録・アラート・レシピ提案・栄養バランス診断まで一括管理。食品ロスをゼロにする完全無料ツール。</p>
       <div class="hero-btns">
         <a href="../" class="btn-primary">今すぐ試す ▶</a>
-        <a href="#howto" class="btn-outline-white">詳しい使い方へ ▶</a>
+        <a href="#howto" class="btn-outline-green">詳しい使い方へ ▶</a>
       </div>
       <div class="hero-stats">
         <div class="hero-stat">👥 <strong>8,420人</strong>が利用中</div>
@@ -255,6 +276,37 @@ a{text-decoration:none;color:inherit;}
       </div>
     </div>
     <div class="hero-mockup">
+      <div class="hero-devices">
+      <!-- タブレットカード: レシピ提案ビュー -->
+      <div class="tablet-card">
+        <div class="tablet-card-head">
+          <div class="tablet-card-head-icon">🍳</div>
+          <span class="tablet-card-head-title">今日のレシピ提案</span>
+        </div>
+        <div class="tablet-recipe-img">
+          <img src="../assets/photos/photo_13.jpg" alt="レシピ例">
+        </div>
+        <div class="tablet-recipe-name">野菜たっぷり炒め</div>
+        <span class="tablet-recipe-tag">期限2日以内の食材を使用</span>
+        <div class="tablet-mini-list">
+          <div class="tablet-mini-item">
+            <div class="tablet-mini-dot" style="background:#ef4444;"></div>
+            <span class="tablet-mini-text">ほうれん草</span>
+            <span class="tablet-mini-badge" style="background:#fee2e2;color:#dc2626;">残り1日</span>
+          </div>
+          <div class="tablet-mini-item">
+            <div class="tablet-mini-dot" style="background:#f59e0b;"></div>
+            <span class="tablet-mini-text">豚こま肉</span>
+            <span class="tablet-mini-badge" style="background:#fef9c3;color:#ca8a04;">残り2日</span>
+          </div>
+          <div class="tablet-mini-item">
+            <div class="tablet-mini-dot" style="background:#10b981;"></div>
+            <span class="tablet-mini-text">トマト</span>
+            <span class="tablet-mini-badge" style="background:#d1fae5;color:#059669;">残り5日</span>
+          </div>
+        </div>
+      </div>
+      <!-- スマホ -->
       <div class="phone-frame">
         <div class="phone-notch"></div>
         <div class="phone-screen">
@@ -297,6 +349,7 @@ a{text-decoration:none;color:inherit;}
           </div>
         </div>
       </div>
+      </div><!-- /hero-devices -->
     </div>
   </div>
 </section>
@@ -621,6 +674,9 @@ a{text-decoration:none;color:inherit;}
 
 <!-- Final CTA -->
 <section class="final-cta">
+  <div class="final-cta-bg-left">
+    <img src="../assets/photos/photo_11.jpg" alt="">
+  </div>
   <div class="final-cta-bg-img">
     <img src="../assets/photos/photo_05.jpg" alt="">
   </div>
@@ -628,7 +684,7 @@ a{text-decoration:none;color:inherit;}
     <h2>今日から、冷蔵庫のムダをゼロへ。</h2>
     <p>登録不要・完全無料でいますぐ始められます。<br>食品ロスと献立の悩みを一緒に解決しましょう。</p>
     <a href="../" class="btn-white">今すぐ試す →</a>
-    <p class="cta-trust">✓ 無料　✓ 登録不要　✓ オフライン対応</p>
+    <p class="cta-trust">✓ 無料　✓ 登録不要　✓ オフライン対応　<strong style="background:rgba(255,255,255,0.18);border-radius:100px;padding:2px 10px;font-size:0.78rem;">ずっと無料</strong></p>
   </div>
 </section>
 
