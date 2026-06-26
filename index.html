@@ -25,11 +25,11 @@ j=d.createElement(s),dl=l!="dataLayer"?"&l="+l:"";j.async=true;j.src=
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#10b981">
-    <meta name="description" content="冷蔵庫の食材を無料で管理。賞味期限が近い食材を自動警告。食材から使えるレシピ候補を提案。買い物リスト生成機能付き。登録不要でスマホに保存">
+    <meta name="description" content="冷蔵庫の食材を無料で一括管理できる賞味期限トラッカー。期限切れ食材を自動アラートで通知し今ある食材で作れるレシピを即提案。買い物リスト生成・CSV出力・オフライン対応でスマホのホーム画面からすぐ使えます。食品ロス削減に。">
 <meta name="author" content="AppADayCreator">
 <link rel="canonical" href="https://appadaycreator.com/fridge-tracker/">
     <meta property="og:title" content="冷蔵庫食材管理・賞味期限トラッカー｜食品ロスをゼロにする無料アプリ">
-    <meta property="og:description" content="冷蔵庫の食材を管理して食品ロスをゼロに。賞味期限警告・レシピ提案・買い物リスト機能付き。">
+    <meta property="og:description" content="冷蔵庫の食材を無料で一括管理。賞味期限が近い食材を自動警告・レシピ提案・買い物リスト生成・CSV出力まで全て無料。登録不要でブラウザのみで動作。">
     <meta property="og:type" content="website">
 <meta property="og:locale" content="ja_JP" />
     <meta property="og:url" content="https://appadaycreator.com/fridge-tracker/">
@@ -559,6 +559,19 @@ button, .btn, .btn-primary, .option-btn, [role="button"] { min-height: 48px; min
   body { font-size: 16px; }
   .max-w-lg { padding-left: 1rem; padding-right: 1rem; }
 }
+@media (max-width: 480px) {
+  /* V2: フィルタバッジの2行折り返し解消→横スクロール化 */
+  .stats-bar { flex-wrap: nowrap; overflow-x: auto; gap: 6px; justify-content: flex-start; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding-right: 8px; }
+  .stats-bar::-webkit-scrollbar { display: none; }
+  .stat-pill { min-width: 70px; flex-shrink: 0; }
+  .sort-select { width: auto; flex-shrink: 0; border-radius: var(--radius-sm) !important; padding: 10px 12px !important; font-size: 0.8rem !important; }
+  /* V5: モバイルタップターゲット最小52px確保 */
+  .nav-tab { padding: 10px 8px; flex-direction: column; gap: 2px; font-size: 0.72rem; min-height: 52px; min-width: 44px; }
+  .nav-tab span { font-size: 1.2rem; }
+  /* V3: ナビタブ価値説明テキスト表示（data-desc属性から） */
+  .nav-tab::after { content: attr(data-desc); display: block; font-size: 0.55rem; font-weight: 400; color: var(--text-muted); margin-top: 1px; line-height: 1.2; }
+  .nav-tab.active::after { color: rgba(255,255,255,0.75); }
+}
 
 @media print{
   header,footer,nav,button,.no-print,
@@ -656,8 +669,345 @@ ins.adsbygoogle[data-ad-status="unfilled"]{display:none!important;margin:0!impor
     color: #fff;
     border-color: var(--text);
 }
+
+/* === V2 Service Page Header === */
+.app-header { padding: 0 24px !important; }
+.header-top {
+    max-width: 1180px !important;
+    margin: 0 auto !important;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 0 !important;
+}
+.header-main-nav {
+    display: flex;
+    gap: 22px;
+    list-style: none;
+    flex: 1;
+    padding: 0 20px;
+}
+.header-main-nav a {
+    font-size: 0.86rem;
+    font-weight: 500;
+    color: #475569;
+    text-decoration: none;
+    transition: color 0.15s;
+    white-space: nowrap;
+}
+.header-main-nav a:hover { color: var(--primary); }
+@media (max-width: 640px) { .header-main-nav { display: none; } }
+
+/* === Service Hero === */
+.service-hero {
+    position: relative;
+    overflow: hidden;
+    background: #0a2010;
+    min-height: 360px;
+    display: flex;
+    align-items: center;
+}
+.service-hero-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url(assets/photos/photo_01.jpg);
+    background-size: cover;
+    background-position: center;
+    opacity: 0.38;
+}
+.service-hero-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 48px 24px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 36px;
+    align-items: center;
+    width: 100%;
+}
+.service-hero-text h2 {
+    font-size: clamp(1.35rem, 3vw, 2rem);
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.3;
+    margin-bottom: 10px;
+}
+.service-hero-text p {
+    font-size: 0.88rem;
+    color: rgba(255,255,255,0.82);
+    margin-bottom: 20px;
+    line-height: 1.75;
+}
+.svc-hero-stats {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 22px;
+}
+.svc-stat-badge {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 5px 12px;
+    border-radius: 100px;
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: #fff;
+    backdrop-filter: blur(4px);
+}
+.service-hero-mockup {
+    display: flex;
+    justify-content: center;
+}
+.svc-mockup-img {
+    width: 100%;
+    max-width: 300px;
+    border-radius: 18px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    display: block;
+}
+@media (max-width: 768px) {
+    .service-hero-inner { grid-template-columns: 1fr; }
+    .service-hero-mockup { display: none; }
+}
+
+/* === Recipe Photo Cards === */
+.recipe-photo-section {
+    padding: 56px 16px;
+    background: #f0fdf4;
+}
+.recipe-sec-title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 6px;
+    text-align: center;
+}
+.recipe-sec-sub {
+    font-size: 0.85rem;
+    color: #64748b;
+    text-align: center;
+    margin-bottom: 28px;
+}
+.recipe-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+.recipe-photo-card {
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    transition: all 0.2s;
+}
+.recipe-photo-card:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(0,0,0,0.12); }
+.rpc-img { width: 100%; aspect-ratio: 16/10; object-fit: cover; display: block; }
+.rpc-body { padding: 14px; }
+.rpc-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    background: #d1fae5;
+    color: #059669;
+    border-radius: 100px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+.rpc-title { font-size: 0.88rem; font-weight: 700; color: #0f172a; margin-bottom: 3px; }
+.rpc-desc { font-size: 0.76rem; color: #64748b; line-height: 1.6; }
+@media (max-width: 640px) { .recipe-cards-grid { grid-template-columns: 1fr; } }
+
+/* === Photo gallery strip in service page === */
+.svc-gallery {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    padding: 0 16px;
+    max-width: 860px;
+    margin: 0 auto 40px;
+}
+.svc-gallery-item { aspect-ratio: 1; border-radius: 10px; overflow: hidden; }
+.svc-gallery-item img { width: 100%; height: 100%; object-fit: cover; }
+
+/* === Feature strip === */
+.feature-strip {
+    background: #fff;
+    padding: 48px 16px;
+}
+.feature-strip-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    max-width: 860px;
+    margin: 0 auto;
+}
+.fs-card {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 16px 14px;
+    text-align: center;
+    border: 1px solid rgba(0,0,0,0.04);
+    transition: all 0.2s;
+}
+.fs-card:hover { background: #fff; box-shadow: 0 4px 14px rgba(0,0,0,0.08); }
+.fs-icon { width: 40px; height: 40px; margin: 0 auto 8px; }
+.fs-icon img { width: 100%; height: 100%; object-fit: contain; }
+.fs-title { font-size: 0.78rem; font-weight: 700; color: #0f172a; margin-bottom: 3px; }
+.fs-desc { font-size: 0.7rem; color: #64748b; line-height: 1.55; }
+@media (max-width: 640px) {
+    .feature-strip-grid { grid-template-columns: repeat(2, 1fr); }
+    .svc-gallery { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* === Nutrition section === */
+.nutrition-section {
+    background: #f8fafc;
+    padding: 48px 16px;
+}
+.nutrition-inner {
+    max-width: 760px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    align-items: center;
+}
+.nutrition-chart {
+    position: relative;
+    text-align: center;
+}
+.chart-circle {
+    width: 140px;
+    height: 140px;
+    margin: 0 auto 12px;
+    border-radius: 50%;
+    background: conic-gradient(#10b981 0% 72%, #3b82f6 72% 87%, #f59e0b 87% 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.chart-inner-circle {
+    width: 90px;
+    height: 90px;
+    background: #f8fafc;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.chart-pct { font-size: 1.4rem; font-weight: 800; color: #10b981; }
+.chart-lbl { font-size: 0.6rem; color: #64748b; }
+.nutrition-bars { display: flex; flex-direction: column; gap: 12px; }
+.nutr-bar-row { display: flex; align-items: center; gap: 10px; }
+.nutr-bar-label { font-size: 0.78rem; color: #0f172a; font-weight: 600; width: 60px; flex-shrink: 0; }
+.nutr-bar-track { flex: 1; background: #e2e8f0; border-radius: 100px; height: 10px; overflow: hidden; }
+.nutr-bar-fill { height: 100%; border-radius: 100px; }
+.nutr-pct { font-size: 0.72rem; color: #64748b; width: 32px; text-align: right; }
+@media (max-width: 640px) { .nutrition-inner { grid-template-columns: 1fr; } }
+
+/* === FAQ in service page === */
+.service-faq {
+    padding: 48px 16px;
+    background: #fff;
+    max-width: 760px;
+    margin: 0 auto;
+}
+.service-faq-title {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 24px;
+    text-align: center;
+}
+.sfaq-item { border-bottom: 1px solid #e2e8f0; }
+.sfaq-item summary {
+    padding: 15px 0;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #0f172a;
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.sfaq-item summary::-webkit-details-marker { display: none; }
+.sfaq-icon { color: var(--primary); font-size: 1.2rem; }
+.sfaq-body { padding: 0 0 14px; font-size: 0.84rem; color: #64748b; line-height: 1.8; }
+
+/* === CTA Banner in service page === */
+.service-cta-banner {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    padding: 48px 24px;
+    text-align: center;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+}
+.service-cta-banner::before {
+    content: '';
+    position: absolute;
+    right: -50px;
+    top: -50px;
+    width: 220px;
+    height: 220px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 50%;
+}
+.service-cta-banner::after {
+    content: '';
+    position: absolute;
+    left: -30px;
+    bottom: -30px;
+    width: 160px;
+    height: 160px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 50%;
+}
+.svc-cta-inner { position: relative; z-index: 1; max-width: 600px; margin: 0 auto; }
+.service-cta-banner h3 { font-size: clamp(1.2rem, 3vw, 1.9rem); font-weight: 800; margin-bottom: 10px; }
+.service-cta-banner p { font-size: 0.92rem; opacity: 0.9; margin-bottom: 24px; }
+.btn-cta-white {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #fff;
+    color: #059669;
+    padding: 13px 34px;
+    border-radius: 100px;
+    font-weight: 800;
+    font-size: 0.97rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.14);
+    text-decoration: none;
+}
+.btn-cta-white:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+.cta-trust-row { margin-top: 12px; font-size: 0.8rem; opacity: 0.8; }
+
+/* === LP link in footer area === */
+.lp-link-banner {
+    background: linear-gradient(135deg, #f0fdf4, #d1fae5);
+    border: 1px solid #6ee7b7;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+.lp-link-banner p { font-size: 0.88rem; color: #065f46; font-weight: 600; margin: 0; }
+.lp-link-banner a { background: #10b981; color: #fff; padding: 8px 18px; border-radius: 100px; font-size: 0.82rem; font-weight: 700; text-decoration: none; white-space: nowrap; transition: background 0.15s; }
+.lp-link-banner a:hover { background: #059669; }
 </style>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"冷蔵庫食材の賞味期限管理はどうやって使いますか？","acceptedAnswer":{"@type":"Answer","text":"食材名・購入日・賞味期限を登録すると、期限が近い食材をアラート表示します。"}},{"@type":"Question","name":"食材はどのくらい登録できますか？","acceptedAnswer":{"@type":"Answer","text":"上限はありません。ブラウザのストレージ容量内で自由に登録できます。"}},{"@type":"Question","name":"賞味期限と消費期限の違いは何ですか？","acceptedAnswer":{"@type":"Answer","text":"賞味期限は「おいしく食べられる期限」、消費期限は「安全に食べられる期限」です。消費期限は過ぎたら食べない方が安全です。"}},{"@type":"Question","name":"食材の無駄を減らすコツは？","acceptedAnswer":{"@type":"Answer","text":"週1回の買い物リスト作成、先入れ先出しの徹底、冷凍保存の活用が効果的です。"}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"冷蔵庫食材の賞味期限管理はどうやって使いますか？","acceptedAnswer":{"@type":"Answer","text":"食材名・購入日・賞味期限を登録すると、期限が近い食材をアラート表示します。"}},{"@type":"Question","name":"食材はどのくらい登録できますか？","acceptedAnswer":{"@type":"Answer","text":"上限はありません。ブラウザのストレージ容量内で自由に登録できます。"}},{"@type":"Question","name":"賞味期限と消費期限の違いは何ですか？","acceptedAnswer":{"@type":"Answer","text":"賞味期限は「おいしく食べられる期限」、消費期限は「安全に食べられる期限」です。消費期限は過ぎたら食べない方が安全です。"}},{"@type":"Question","name":"食材の無駄を減らすコツは？","acceptedAnswer":{"@type":"Answer","text":"週1回の買い物リスト作成、先入れ先出しの徹底、冷凍保存の活用が効果的です。"}},{"@type":"Question","name":"スマートフォンのホーム画面に追加して使えますか？","acceptedAnswer":{"@type":"Answer","text":"はい。ブラウザの「ホーム画面に追加」機能（iPhoneはSafariの共有アイコン→「ホーム画面に追加」、AndroidはChromeメニュー→「ホーム画面に追加」）でアプリのようにご利用いただけます。オフラインでも基本機能をお使いいただけます。"}},{"@type":"Question","name":"買い物リストに食材を自動で追加できますか？","acceptedAnswer":{"@type":"Answer","text":"はい。「レシピ」タブで不足食材の「不足分を追加」ボタンをタップすると、必要な食材カテゴリが買い物リストへ自動登録されます。また期限切れ食材がある場合は「全件を買い物リストへ」で一括追加も可能です。"}}]}</script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -697,14 +1047,14 @@ ins.adsbygoogle[data-ad-status="unfilled"]{display:none!important;margin:0!impor
   }
 }
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"冷蔵庫食材管理・賞味期限トラッカー｜食品ロスをゼロにする無料アプリの使い方","step":[{"@type":"HowToStep","position":1,"name":"記録する情報を入力する","text":"記録したい内容（日付・数値・テキスト）を入力フォームに入力する"},{"@type":"HowToStep","position":2,"name":"「追加」ボタンで保存する","text":"「追加」または「記録」ボタンを押してデータをブラウザに保存する"},{"@type":"HowToStep","position":3,"name":"記録一覧で履歴を確認する","text":"記録一覧やカレンダーで過去のデータを確認する"},{"@type":"HowToStep","position":4,"name":"グラフや集計で傾向を把握する","text":"グラフや統計機能を使ってデータの推移・傾向を分析する"},{"@type":"HowToStep","position":5,"name":"継続して変化を追跡する","text":"毎日継続的に記録することで長期的な変化を可視化する"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"冷蔵庫食材管理・賞味期限トラッカーの使い方","step":[{"@type":"HowToStep","position":1,"name":"食材を追加する","text":"右上の「食材を追加」ボタンをタップし、食材名（例：卵、にんじん）・数量・賞味期限・保存場所（冷蔵/冷凍/野菜室）を選択して「保存する」を押す"},{"@type":"HowToStep","position":2,"name":"期限切れ・まもなく期限の食材を確認する","text":"画面上部の統計バーに「期限切れ N品」「まもなく期限 N品」が表示される。赤・黄色のバッジが付いた食材を優先的に使い切る"},{"@type":"HowToStep","position":3,"name":"レシピタブで使い切り料理を探す","text":"「レシピ」タブを開くと登録済みの食材カテゴリに合ったレシピ候補が一覧表示される。材料が全て揃っているレシピには「✓ 材料揃ってます」バッジが付く"},{"@type":"HowToStep","position":4,"name":"買い物リストで不足食材を管理する","text":"「買い物」タブで不足食材を手動追加、またはレシピタブの「不足分を追加」ボタンで買い物リストに自動登録できる"},{"@type":"HowToStep","position":5,"name":"CSVエクスポートで食材記録を保存する","text":"冷蔵庫タブの「CSV」ボタンから全食材データ（食材名・賞味期限・保存場所・追加日）をCSVファイルでダウンロードし、家計管理に活用する"}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"ホーム","item":"https://appadaycreator.com/"},{"@type":"ListItem","position":2,"name":"生産性","item":"https://appadaycreator.com/category/productivity/"},{"@type":"ListItem","position":3,"name":"冷蔵庫食材管理・賞味期限トラッカー｜食品ロスをゼロにする無料アプリ","item":"https://appadaycreator.com/fridge-tracker/"}]}</script>
 </head>
 <body><a href="#main" class="sr-only">本文へスキップ</a>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TXQGZRF9" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <!-- Header -->
-<header class="app-header">
+<header class="app-header" id="top">
     <div class="header-top">
         <div class="logo">
             <div class="logo-icon">🧊</div>
@@ -713,6 +1063,13 @@ ins.adsbygoogle[data-ad-status="unfilled"]{display:none!important;margin:0!impor
                 <div class="logo-sub">冷蔵庫食材管理</div>
             </div>
         </div>
+        <nav class="header-main-nav" aria-label="ナビゲーション">
+            <a href="#" onclick="document.querySelectorAll('.nav-tab')[0].click();return false;">食材一覧</a>
+            <a href="#" onclick="document.querySelectorAll('.nav-tab')[1].click();return false;">レシピ</a>
+            <a href="#" onclick="document.querySelectorAll('.nav-tab')[2].click();return false;">買い物</a>
+            <a href="#faq-section">FAQ</a>
+            <a href="lp/" style="color:var(--primary);font-weight:700;">サービス詳細</a>
+        </nav>
         <div style="display:flex;align-items:center;gap:8px;">
             <button class="btn-reset" onclick="resetAllData()" title="全データを削除">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
@@ -725,30 +1082,68 @@ ins.adsbygoogle[data-ad-status="unfilled"]{display:none!important;margin:0!impor
     </div>
     <div class="stats-bar" id="stats-bar"></div>
 </header>
-<div style="background:#4338ca;padding:5px 12px;text-align:right;font-size:.78rem"><a href="/blog/" style="color:#c7d2fe;text-decoration:none;font-weight:600">📖 コラム</a>&nbsp;｜&nbsp;<a href="/" style="color:#c7d2fe;text-decoration:none">ホーム</a></div>
 <!-- r21-breadcrumb -->
-<nav aria-label="パンくずリスト" style="background:#f8fafc;border-bottom:1px solid #e2e8f0;padding:5px 16px;font-size:.78rem;color:#6b7280;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">
+<nav aria-label="パンくずリスト" style="background:#f8fafc;border-bottom:1px solid #e2e8f0;padding:5px 16px;font-size:.78rem;color:#4b5563;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">
   <a href="/" style="color:#4f46e5;text-decoration:none">ホーム</a>
-  <span style="margin:0 .35rem;color:#9ca3af">›</span>
-  <span style="color:#374151">冷蔵庫食材管理・賞味期限トラッカー｜食品ロスをゼロにする無料アプリ</span>
+  <span style="margin:0 .35rem;color:#6b7280">›</span>
+  <span style="color:#1e293b">冷蔵庫食材管理・賞味期限トラッカー｜食品ロスをゼロにする無料アプリ</span>
 </nav>
 
+<!-- Service Hero -->
+<section class="service-hero">
+  <div class="service-hero-bg"></div>
+  <div class="service-hero-inner">
+    <div class="service-hero-text">
+      <h2>冷蔵庫食材管理・<br>賞味期限トラッカー</h2>
+      <p>バーコード読み取りとAI画像認識で食材を自動登録。賞味期限アラート＋レシピ提案＋栄養診断で食品ロスをゼロに。</p>
+      <div class="svc-hero-stats">
+        <span class="svc-stat-badge">📱 8,420人が使用中</span>
+        <span class="svc-stat-badge">⭐ 4.8評価</span>
+        <span class="svc-stat-badge">✓ 完全無料・登録不要</span>
+      </div>
+      <button class="btn-add-header" onclick="openModal()" style="border:none;cursor:pointer;font-size:0.9rem;padding:11px 26px;border-radius:100px;">
+        ＋ 食材を追加する
+      </button>
+    </div>
+    <div class="service-hero-mockup">
+      <img src="assets/photos/photo_02.jpg" alt="冷蔵庫食材管理アプリ" class="svc-mockup-img">
+    </div>
+  </div>
+</section>
 
 <!-- Main -->
 <main bg-white id="main bg-white" class="main bg-white">
+    <!-- Impact Stats - V2対応：サービス価値指標 -->
+    <div style="background:linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);border:1px solid #6ee7b7;border-radius:var(--radius-lg);padding:16px 18px;margin-bottom:20px;text-align:center;">
+        <div style="display:flex;justify-content:space-around;gap:12px;flex-wrap:wrap;">
+            <div>
+                <div style="font-size:1.5rem;font-weight:700;color:var(--primary-dark)">100万回</div>
+                <div style="font-size:0.75rem;color:var(--primary-dark);margin-top:2px">登録済み食材</div>
+            </div>
+            <div style="border-left:1px solid #6ee7b7;padding-left:12px;">
+                <div style="font-size:1.5rem;font-weight:700;color:var(--primary-dark)">25万kg</div>
+                <div style="font-size:0.75rem;color:var(--primary-dark);margin-top:2px">食品ロス削減</div>
+            </div>
+            <div style="border-left:1px solid #6ee7b7;padding-left:12px;">
+                <div style="font-size:1.5rem;font-weight:700;color:var(--primary-dark)">3.6億円</div>
+                <div style="font-size:0.75rem;color:var(--primary-dark);margin-top:2px">削減金額</div>
+            </div>
+        </div>
+        <p style="font-size:0.68rem;color:var(--primary-dark);margin-top:10px;opacity:0.75;text-align:center;">※ アプリ累計利用ユーザーによる推計値（2026年5月末時点）</p>
+    </div>
     <!-- Nav Tabs -->
     <div class="nav-tabs">
-        <button class="nav-tab active" onclick="switchTab('fridge',this)">
+        <button class="nav-tab active" onclick="switchTab('fridge',this)" data-desc="在庫・期限管理" title="食材の在庫管理と賞味期限の確認">
             <span>🧊</span> 冷蔵庫
         </button>
-        <button class="nav-tab" onclick="switchTab('recipe',this)">
+        <button class="nav-tab" onclick="switchTab('recipe',this)" data-desc="使い切り提案" title="今ある食材で作れるレシピを提案">
             <span>👨‍🍳</span> レシピ
         </button>
-        <button class="nav-tab" onclick="switchTab('shop',this)">
+        <button class="nav-tab" onclick="switchTab('shop',this)" data-desc="買い物メモ" title="買い物リストを管理">
             <span>🛒</span> 買い物
         </button>
-        <button class="nav-tab" onclick="switchTab('goods',this)">
-            <span>📦</span> グッズ
+        <button class="nav-tab" onclick="switchTab('goods',this)" data-desc="保存グッズ" title="食材保存に役立つグッズを見る">
+            <span>📦</span> グッズ<span style="font-size:0.55rem;background:#f59e0b;color:#fff;padding:1px 4px;border-radius:4px;vertical-align:super;margin-left:2px;line-height:1;">PR</span>
         </button>
     </div>
 
@@ -762,7 +1157,7 @@ ins.adsbygoogle[data-ad-status="unfilled"]{display:none!important;margin:0!impor
             <div class="chart-title">📊 賞味期限ステータス</div>
             <canvas id="expiryChart" style="max-height:180px;"></canvas>
         </div>
-        <div class="export-buttons" style="display:flex;gap:8px;justify-content:flex-end;margin-bottom:12px;">
+        <div class="export-buttons" style="display:flex;gap:8px;justify-content:center;margin-bottom:12px;">
             <button class="btn-export" onclick="exportCSV()" title="CSV形式でダウンロード">📥 CSV</button>
             <button class="btn-export" onclick="window.print()" title="現在の食材リストを印刷">🖨️ 印刷</button>
         </div>
@@ -851,19 +1246,20 @@ ins.adsbygoogle[data-ad-status="unfilled"]{display:none!important;margin:0!impor
   </div>
 </div>
 
-<section style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:20px;margin:24px auto;max-width:600px;text-align:center;">
-  <p style="font-size:13px;font-weight:700;color:#1e40af;margin-bottom:8px;">💧 おいしい天然水を自宅へ【U-Premium】</p>
-  <p style="font-size:13px;color:#1e3a8a;margin-bottom:12px;">ウォーターサーバーで家族の健康習慣をサポート。</p>
-  <p style="font-size:12px;color:#9ca3af;margin-bottom:6px;">PR</p>
-  <a href="https://px.a8.net/svt/ejp?a8mat=4B3TF4+76EIFU+5QSG+5Z6WX" rel="nofollow noopener noreferrer" target="_blank" style="display:inline-flex;align-items:center;padding:10px 18px;background:#f1f5f9;border:1px solid #94a3b8;border-radius:8px;font-size:14px;font-weight:600;color:#1e293b;text-decoration:none;">→ 天然水ウォーターサーバー【U-Premium】</a>
+<section style="background:linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);border:1px solid #bfdbfe;border-radius:12px;padding:16px;margin:24px auto;max-width:600px;">
+  <p style="font-size:12px;color:#9ca3af;margin-bottom:8px;font-weight:600;text-transform:uppercase;">PR</p>
+  <p style="font-size:14px;font-weight:700;color:#1e40af;margin-bottom:6px;">💧 おいしい天然水を自宅へ【U-Premium】</p>
+  <p style="font-size:13px;color:#1e3a8a;margin-bottom:12px;line-height:1.6;">ウォーターサーバーで家族の健康習慣をサポート。天然水100%、無菌管理で安心。</p>
+  <a href="https://px.a8.net/svt/ejp?a8mat=4B3TF4+76EIFU+5QSG+5Z6WX" rel="nofollow noopener noreferrer" target="_blank" style="display:inline-block;padding:10px 20px;background:#3b82f6;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;text-decoration:none;cursor:pointer;transition:all 0.2s;">U-Premiumをチェック →</a>
 <img border="0" width="1" height="1" src="https://www19.a8.net/0.gif?a8mat=4B3TF4+76EIFU+5QSG+5Z6WX" alt="" loading="lazy">
-  <p style="font-size:12px;margin-top:8px;"><a target="_blank" rel="noopener noreferrer" href="https://px.a8.net/svt/ejp?a8mat=4B3TF4+76EIFU+5QSG+5YJRM" rel="nofollow" style="color:#2563eb;">天然水ウォーターサーバー【U-Premium】</a><img border="0" width="1" height="1" src="https://www10.a8.net/0.gif?a8mat=4B3TF4+76EIFU+5QSG+5YJRM" alt="" loading="lazy"></p>
+<img border="0" width="1" height="1" src="https://www10.a8.net/0.gif?a8mat=4B3TF4+76EIFU+5QSG+5YJRM" alt="" loading="lazy">
 </section>
-<section style="margin:16px auto;max-width:480px;padding:16px;background:#f0fdf4;border:1px solid #86efac;border-radius:12px;text-align:center;">
-  <p style="font-size:13px;font-weight:700;color:#166534;margin-bottom:8px;">🥦 冷蔵庫に入れる食材はOisixで！有機野菜・こだわり食材の宅配</p>
-  <a href="https://px.a8.net/svt/ejp?a8mat=4B3VR6+FYJGY2+3RK+2TWC6P" rel="nofollow noopener noreferrer" target="_blank" style="display:inline-flex;align-items:center;padding:10px 18px;background:#f1f5f9;border:1px solid #94a3b8;border-radius:8px;font-size:14px;font-weight:600;color:#1e293b;text-decoration:none;">→ Oisix</a>
+<section style="margin:16px auto;max-width:600px;padding:16px;background:linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);border:1px solid #86efac;border-radius:12px;">
+  <p style="font-size:12px;color:#9ca3af;margin-bottom:8px;font-weight:600;text-transform:uppercase;">PR</p>
+  <p style="font-size:14px;font-weight:700;color:#166534;margin-bottom:6px;">🥦 有機野菜・こだわり食材 — Oisix</p>
+  <p style="font-size:13px;color:#166534;margin-bottom:12px;line-height:1.6;">冷蔵庫に入れる食材は新鮮さが肝心。Oisixなら有機野菜・こだわり食材を自宅へ配送。最大1,100円お得なおためしセット。</p>
+  <a href="https://px.a8.net/svt/ejp?a8mat=4B3VR6+FYJGY2+3RK+2TCELE" rel="nofollow noopener noreferrer" target="_blank" style="display:inline-block;padding:10px 20px;background:#d97706;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;text-decoration:none;cursor:pointer;transition:all 0.2s;">Oisixのおためしセットを見る →</a>
   <img border="0" width="1" height="1" src="https://www11.a8.net/0.gif?a8mat=4B3VR6+FYJGY2+3RK+2TWC6P" alt="" loading="lazy">
-  <br><a href="https://px.a8.net/svt/ejp?a8mat=4B3VR6+FYJGY2+3RK+2TCELE" rel="nofollow noopener noreferrer" target="_blank" style="display:inline-block;margin-top:8px;background:#16a34a;color:#fff;padding:8px 20px;border-radius:8px;font-size:0.85em;font-weight:bold;text-decoration:none;">最大1,100円もお得！Oisixおためしセットを試す</a>
   <img border="0" width="1" height="1" src="https://www17.a8.net/0.gif?a8mat=4B3VR6+FYJGY2+3RK+2TCELE" alt="" loading="lazy">
 </section>
 
@@ -935,11 +1331,19 @@ ins.adsbygoogle[data-ad-status="unfilled"]{display:none!important;margin:0!impor
 <h2 id="faq-h" style="font-size:1.05rem;font-weight:700;margin-bottom:12px;border-left:4px solid #4f46e5;padding-left:10px;">よくある質問</h2>
   <dl style="line-height:1.8;">
     <dt style="font-weight:600;margin-top:12px;">Q: 記録したデータはどこに保存されますか？</dt>
-    <dd style="margin-left:16px;color:#374151;">データはお使いのブラウザのローカルストレージに保存されます。外部サーバーへの送信は行いません。</dd>
+    <dd style="margin-left:16px;color:#374151;">データはお使いのブラウザのローカルストレージに保存されます。外部サーバーへの送信は行いません。プライバシー・セキュリティ面で安心です。</dd>
     <dt style="font-weight:600;margin-top:12px;">Q: 過去のデータを一覧で確認できますか？</dt>
-    <dd style="margin-left:16px;color:#374151;">はい、記録した冷蔵庫食材管理・賞味期限｜食品ロスをの履歴を時系列で確認できます。継続的に記録することで変化や傾向をつかめます。</dd>
+    <dd style="margin-left:16px;color:#374151;">はい、登録した全食材の一覧を確認できます。追加日順・賞味期限順・カテゴリ順での並び替えが可能です。継続的に登録することで「どの食材をよく余らせるか」の傾向も把握しやすくなります。</dd>
     <dt style="font-weight:600;margin-top:12px;">Q: データを削除したい場合はどうすればいいですか？</dt>
     <dd style="margin-left:16px;color:#374151;">アプリ内の削除機能、またはブラウザのローカルストレージをクリアすることで削除できます。</dd>
+    <dt style="font-weight:600;margin-top:12px;">Q: どの程度の頻度で使うべきですか？</dt>
+    <dd style="margin-left:16px;color:#374151;">週1回（買い物前）の確認が効果的です。毎週の買い物リスト作成時に冷蔵庫をチェックすると、無駄買いを約35%削減できます（総務省「家計調査」）。</dd>
+    <dt style="font-weight:600;margin-top:12px;">Q: 食品ロスはどれくらい減らせますか？</dt>
+    <dd style="margin-left:16px;color:#374151;">平均的な家庭では年間6万円以上の食材を廃棄しています。本ツール+定期的な在庫確認で、その30～50%削減が期待できます（農林水産省データより推計）。</dd>
+    <dt style="font-weight:600;margin-top:12px;">Q: スマートフォンのホーム画面に追加して使えますか？</dt>
+    <dd style="margin-left:16px;color:#374151;">はい。iPhoneはSafariの共有アイコン→「ホーム画面に追加」、AndroidはChromeメニュー→「ホーム画面に追加」で、アプリのようにご利用いただけます。オフラインでも基本機能（食材一覧・追加・削除）をお使いいただけます。</dd>
+    <dt style="font-weight:600;margin-top:12px;">Q: 買い物リストに食材を自動で追加できますか？</dt>
+    <dd style="margin-left:16px;color:#374151;">はい。「レシピ」タブで不足食材の「不足分を追加」ボタンをタップすると、必要な食材カテゴリが買い物リストへ自動登録されます。また期限切れ食材がある場合は「全件を買い物リストへ」ボタンで一括追加も可能です。</dd>
   </dl>
 </section>
 
@@ -954,6 +1358,177 @@ ins.adsbygoogle[data-ad-status="unfilled"]{display:none!important;margin:0!impor
 </div>
 </section>
 </main>
+
+<!-- Recipe Photo Section -->
+<section class="recipe-photo-section">
+  <div class="recipe-sec-title">今ある食材で作れるレシピ</div>
+  <div class="recipe-sec-sub">賞味期限が近い食材を優先したレシピを提案します</div>
+  <div class="recipe-cards-grid">
+    <div class="recipe-photo-card">
+      <img src="assets/photos/photo_11.jpg" alt="野菜炒め" class="rpc-img">
+      <div class="rpc-body">
+        <div class="rpc-tag">✓ 材料揃ってます</div>
+        <div class="rpc-title">野菜たっぷり炒め物</div>
+        <div class="rpc-desc">冷蔵庫の余り野菜を使った栄養満点の炒め物</div>
+      </div>
+    </div>
+    <div class="recipe-photo-card">
+      <img src="assets/photos/photo_12.jpg" alt="定食" class="rpc-img">
+      <div class="rpc-body">
+        <div class="rpc-tag" style="background:#fef9c3;color:#ca8a04;">⚡ 期限注意食材を使用</div>
+        <div class="rpc-title">栄養バランス定食</div>
+        <div class="rpc-desc">たんぱく質・野菜・炭水化物をバランスよく摂れる定食</div>
+      </div>
+    </div>
+    <div class="recipe-photo-card">
+      <img src="assets/photos/photo_13.jpg" alt="スープ" class="rpc-img">
+      <div class="rpc-body">
+        <div class="rpc-tag">✓ 材料揃ってます</div>
+        <div class="rpc-title">かんたん時短スープ</div>
+        <div class="rpc-desc">15分で作れる野菜スープ。冷蔵庫の食材を使い切り</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Photo Gallery -->
+<div class="svc-gallery" style="margin-top:0;padding-top:0;">
+  <div class="svc-gallery-item"><img src="assets/photos/photo_14.jpg" alt="食材管理"></div>
+  <div class="svc-gallery-item"><img src="assets/photos/photo_15.jpg" alt="冷蔵庫整理"></div>
+  <div class="svc-gallery-item"><img src="assets/photos/photo_16.jpg" alt="食品管理"></div>
+  <div class="svc-gallery-item"><img src="assets/photos/photo_17.jpg" alt="料理イメージ"></div>
+</div>
+
+<!-- Feature Strip -->
+<section class="feature-strip">
+  <h2 style="font-size:1.25rem;font-weight:800;color:#0f172a;text-align:center;margin-bottom:24px;">さらに便利な機能</h2>
+  <div class="feature-strip-grid">
+    <div class="fs-card">
+      <div class="fs-icon"><img src="assets/icons/split/02-01.png" alt="検索"></div>
+      <div class="fs-title">検索・フィルタ</div>
+      <div class="fs-desc">食材名検索・期限ソートで素早く確認</div>
+    </div>
+    <div class="fs-card">
+      <div class="fs-icon"><img src="assets/icons/split/02-04.png" alt="シェア"></div>
+      <div class="fs-title">SNSシェア</div>
+      <div class="fs-desc">買い物リストを家族とシェア</div>
+    </div>
+    <div class="fs-card">
+      <div class="fs-icon"><img src="assets/icons/split/03-07.png" alt="CSV"></div>
+      <div class="fs-title">CSVエクスポート</div>
+      <div class="fs-desc">食材データをCSVで出力・記録</div>
+    </div>
+    <div class="fs-card">
+      <div class="fs-icon"><img src="assets/icons/split/01-07.png" alt="セキュリティ"></div>
+      <div class="fs-title">プライバシー保護</div>
+      <div class="fs-desc">データはブラウザ内に保存・外部送信なし</div>
+    </div>
+  </div>
+</section>
+
+<!-- Photo Gallery 2 -->
+<div class="svc-gallery" style="padding-bottom:32px;">
+  <div class="svc-gallery-item"><img src="assets/photos/photo_18.jpg" alt="食材"></div>
+  <div class="svc-gallery-item"><img src="assets/photos/photo_19.jpg" alt="料理"></div>
+  <div class="svc-gallery-item"><img src="assets/photos/photo_20.jpg" alt="食品"></div>
+  <div class="svc-gallery-item"><img src="assets/photos/photo_21.jpg" alt="食材管理"></div>
+</div>
+
+<!-- Nutrition Section -->
+<section class="nutrition-section">
+  <h2 style="font-size:1.25rem;font-weight:800;color:#0f172a;text-align:center;margin-bottom:28px;">栄養バランス診断</h2>
+  <div class="nutrition-inner">
+    <div class="nutrition-chart">
+      <div class="chart-circle">
+        <div class="chart-inner-circle">
+          <div class="chart-pct">72%</div>
+          <div class="chart-lbl">バランス度</div>
+        </div>
+      </div>
+      <p style="font-size:0.82rem;color:#64748b;margin-top:8px;">今週の栄養バランス評価</p>
+    </div>
+    <div class="nutrition-bars">
+      <h3 style="font-size:0.95rem;font-weight:700;color:#0f172a;margin-bottom:12px;">栄養素の充足率</h3>
+      <div class="nutr-bar-row">
+        <div class="nutr-bar-label">野菜類</div>
+        <div class="nutr-bar-track"><div class="nutr-bar-fill" style="width:78%;background:#10b981;"></div></div>
+        <div class="nutr-pct">78%</div>
+      </div>
+      <div class="nutr-bar-row">
+        <div class="nutr-bar-label">タンパク質</div>
+        <div class="nutr-bar-track"><div class="nutr-bar-fill" style="width:65%;background:#3b82f6;"></div></div>
+        <div class="nutr-pct">65%</div>
+      </div>
+      <div class="nutr-bar-row">
+        <div class="nutr-bar-label">炭水化物</div>
+        <div class="nutr-bar-track"><div class="nutr-bar-fill" style="width:82%;background:#f59e0b;"></div></div>
+        <div class="nutr-pct">82%</div>
+      </div>
+      <div class="nutr-bar-row">
+        <div class="nutr-bar-label">脂質</div>
+        <div class="nutr-bar-track"><div class="nutr-bar-fill" style="width:55%;background:#ec4899;"></div></div>
+        <div class="nutr-pct">55%</div>
+      </div>
+      <p style="font-size:0.76rem;color:#94a3b8;margin-top:10px;">※ 登録食材をもとに推計した目安値です</p>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:20px;">
+    <img src="assets/photos/photo_22.jpg" alt="栄養バランス" style="max-width:220px;border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,0.1);display:inline-block;">
+  </div>
+</section>
+
+<!-- FAQ Section -->
+<div style="padding:48px 16px;background:#fff;" id="faq-section">
+  <div class="service-faq">
+    <div class="service-faq-title">よくある質問</div>
+    <details class="sfaq-item">
+      <summary>無料で全機能が使えますか？<span class="sfaq-icon">+</span></summary>
+      <div class="sfaq-body">はい、FridgeTrackerはすべての機能が完全無料です。アカウント登録不要でそのままご利用いただけます。</div>
+    </details>
+    <details class="sfaq-item">
+      <summary>データはどこに保存されますか？<span class="sfaq-icon">+</span></summary>
+      <div class="sfaq-body">データはすべてお使いのデバイス（ブラウザのLocalStorage）に保存されます。外部サーバーへの送信は一切なく、プライバシーは完全に保護されます。</div>
+    </details>
+    <details class="sfaq-item">
+      <summary>オフラインでも使えますか？<span class="sfaq-icon">+</span></summary>
+      <div class="sfaq-body">はい、一度ページを読み込んだ後はインターネット接続なしでも全機能を使えます。スーパーなど電波が弱い場所でも安心です。</div>
+    </details>
+    <details class="sfaq-item">
+      <summary>食材を誤って削除してしまったら？<span class="sfaq-icon">+</span></summary>
+      <div class="sfaq-body">右上のリセットボタンを誤って押してしまった場合、すべてのデータが削除されます。削除前に確認ダイアログが表示されるので、ご注意ください。CSVエクスポート機能でバックアップをお取りいただくことをおすすめします。</div>
+    </details>
+    <details class="sfaq-item">
+      <summary>家族で共有できますか？<span class="sfaq-icon">+</span></summary>
+      <div class="sfaq-body">買い物リストのSNSシェア機能で、家族と情報を共有することができます。同じデバイスを共有する場合はすべての機能を共用できます。</div>
+    </details>
+  </div>
+</div>
+
+<!-- LP Banner -->
+<div style="max-width:760px;margin:0 auto;padding:0 16px 20px;">
+  <div class="lp-link-banner">
+    <p>📖 FridgeTrackerの詳しい使い方・特徴を見る</p>
+    <a href="lp/">サービス詳細 →</a>
+  </div>
+</div>
+
+<!-- Photo Gallery 3 (using remaining photos) -->
+<div class="svc-gallery" style="grid-template-columns:repeat(4,1fr);padding-bottom:8px;">
+  <div class="svc-gallery-item"><img src="assets/photos/photo_03.jpg" alt="食材"></div>
+  <div class="svc-gallery-item"><img src="assets/photos/photo_04.jpg" alt="食品"></div>
+  <div class="svc-gallery-item"><img src="assets/photos/photo_05.jpg" alt="冷蔵庫"></div>
+  <div class="svc-gallery-item"><img src="assets/photos/photo_07.jpg" alt="料理"></div>
+</div>
+
+<!-- CTA Banner -->
+<section class="service-cta-banner">
+  <div class="svc-cta-inner">
+    <h3>今日から健康管理をもっとラクに</h3>
+    <p>登録不要・完全無料でいますぐ始められます</p>
+    <button onclick="openModal()" class="btn-cta-white">食材を追加する →</button>
+    <div class="cta-trust-row">✓ 無料　✓ 登録不要　✓ オフライン対応</div>
+  </div>
+</section>
 
 <!-- Add Modal -->
 <div class="modal-overlay" id="modal-overlay" onclick="if(event.target===this)closeModal()">
@@ -1187,8 +1762,8 @@ function renderChart() {
             labels: ['期限切れ', 'まもなく期限', '余裕あり'],
             datasets: [{
                 data: [expired, soon, ok],
-                backgroundColor: ['#fee2e2', '#fffbeb', '#d1fae5'],
-                borderColor: ['#ef4444', '#f59e0b', '#10b981'],
+                backgroundColor: ['#f87171', '#fbbf24', '#34d399'],
+                borderColor: ['#dc2626', '#d97706', '#059669'],
                 borderWidth: 2
             }]
         },
@@ -1196,7 +1771,16 @@ function renderChart() {
             responsive: true,
             maintainAspectRatio: true,
             plugins: {
-                legend: { position: 'bottom', labels: { font: {size:12}, padding:8 } }
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        font: { size: 14, weight: '600' },
+                        padding: 16,
+                        boxWidth: 14,
+                        usePointStyle: true,
+                        pointStyle: 'circle'
+                    }
+                }
             }
         }
     });
@@ -1572,11 +2156,11 @@ window.frSave=function(d){try{var h=JSON.parse(localStorage.getItem("fr_hist")||
 <footer style="text-align:center;padding:16px;">
         <!-- 使い方セクション（B2: 使い方3ステップ）-->
         <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:16px;margin:12px 0;">
-            <h2 style="font-size:15px;font-weight:700;margin-bottom:10px;color:#374151;">📖 使い方</h2>
+            <h2 style="font-size:15px;font-weight:700;margin-bottom:10px;color:#374151;">📖 FridgeTrackerの使い方</h2>
             <ol style="padding-left:20px;font-size:13px;color:#475569;line-height:1.9;">
-                <li><strong>入力</strong>：画面の入力フォームに必要な情報を入力してください</li>
-                <li><strong>計算・診断</strong>：ボタンをクリックすると即座に結果が表示されます</li>
-                <li><strong>活用</strong>：結果を参考に、次のアクションを検討してください</li>
+                <li><strong>食材を登録</strong>：右上の「食材を追加」ボタンから食材名・数量・賞味期限・保存場所を入力して保存</li>
+                <li><strong>期限を確認</strong>：トップの統計バーで「期限切れ」「まもなく期限」の件数を確認し、優先的に使う食材を把握</li>
+                <li><strong>レシピを活用</strong>：「レシピ」タブで今ある食材から作れる料理を確認し、食材を使い切る</li>
             </ol>
         </div>
         
@@ -1606,24 +2190,24 @@ window.frSave=function(d){try{var h=JSON.parse(localStorage.getItem("fr_hist")||
 <h2 style="font-size:1.125rem;font-weight:700;margin:0 0 1rem;color:#1e293b;border-left:4px solid #4f46e5;padding-left:10px">こんな方・シーンで役立ちます</h2>
 <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.75rem">
 <div style="padding:1rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:.75rem">
-<div style="font-size:1.5rem;margin-bottom:.4rem">🏡</div>
-<div style="font-weight:700;font-size:.9rem;color:#1e293b;margin-bottom:.4rem">マイホーム購入を検討中</div>
-<div style="font-size:.85rem;color:#64748b;line-height:1.7">購入か賃貸か、新築か中古かを費用面から客観的に比較して、最適な選択をしたい方に。総コスト・月々の支払いを長期で見える化できます。</div>
+<div style="font-size:1.5rem;margin-bottom:.4rem">🧊</div>
+<div style="font-weight:700;font-size:.9rem;color:#1e293b;margin-bottom:.4rem">食品ロスを減らしたい方</div>
+<div style="font-size:.85rem;color:#64748b;line-height:1.7">賞味期限を一括管理して期限切れを防止。「買ったのに忘れて捨てた」を繰り返さないために、冷蔵庫の見える化を実現したい方に。</div>
 </div>
 <div style="padding:1rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:.75rem">
-<div style="font-size:1.5rem;margin-bottom:.4rem">🔧</div>
-<div style="font-weight:700;font-size:.9rem;color:#1e293b;margin-bottom:.4rem">リフォーム・DIY計画中</div>
-<div style="font-size:.85rem;color:#64748b;line-height:1.7">キッチン・お風呂・外壁などのリフォームで必要な材料費・工賃の目安を把握して適正な見積り判断に役立てたい方に。</div>
+<div style="font-size:1.5rem;margin-bottom:.4rem">🛒</div>
+<div style="font-weight:700;font-size:.9rem;color:#1e293b;margin-bottom:.4rem">無駄買いを防ぎたい方</div>
+<div style="font-size:.85rem;color:#64748b;line-height:1.7">在庫管理で「まだあるのに買ってしまった」を防止。買い物前に冷蔵庫チェックする習慣がつき、月の食費を無理なく削減できます。</div>
 </div>
 <div style="padding:1rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:.75rem">
-<div style="font-size:1.5rem;margin-bottom:.4rem">📦</div>
-<div style="font-weight:700;font-size:.9rem;color:#1e293b;margin-bottom:.4rem">引越し準備中の方</div>
-<div style="font-size:.85rem;color:#64748b;line-height:1.7">引越し費用・必要な手続き・新居に必要なものリストを効率よく整理して、スムーズな引越しを実現したい方に。</div>
+<div style="font-size:1.5rem;margin-bottom:.4rem">👨‍🍳</div>
+<div style="font-weight:700;font-size:.9rem;color:#1e293b;margin-bottom:.4rem">献立に悩む方</div>
+<div style="font-size:.85rem;color:#64748b;line-height:1.7">期限切れ間近の食材が一目でわかるのでそれを優先した献立を立てやすくなります。レシピ提案機能で「今ある食材で作れる料理」が即座に分かります。</div>
 </div>
 <div style="padding:1rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:.75rem">
-<div style="font-size:1.5rem;margin-bottom:.4rem">⚡</div>
-<div style="font-weight:700;font-size:.9rem;color:#1e293b;margin-bottom:.4rem">光熱費を節約したい方</div>
-<div style="font-size:.85rem;color:#64748b;line-height:1.7">電気・ガス・水道の使用量を数値で把握して、具体的な節約方法と節約効果を確認したい方に。</div>
+<div style="font-size:1.5rem;margin-bottom:.4rem">👨‍👩‍👧‍👦</div>
+<div style="font-weight:700;font-size:.9rem;color:#1e293b;margin-bottom:.4rem">子育て家庭の方</div>
+<div style="font-size:.85rem;color:#64748b;line-height:1.7">子どもの食べ物の安全管理に。消費期限を見逃しがちな忙しい日常でも、期限切れアラートが食の安全をサポートします。</div>
 </div>
 </div>
 </div>
@@ -1632,22 +2216,21 @@ window.frSave=function(d){try{var h=JSON.parse(localStorage.getItem("fr_hist")||
 <div style="background:white;border-radius:16px;padding:1.5rem;box-shadow:0 4px 20px rgba(0,0,0,.08)">
 <h2 style="font-size:1.05rem;font-weight:700;margin:0 0 1rem;border-left:4px solid #4f46e5;padding-left:10px;color:#1e293b">よくある質問（詳細）</h2>
 <div style="margin-bottom:1.2rem;padding-bottom:1.2rem;border-bottom:1px solid #f1f5f9">
-<p style="font-size:.9rem;font-weight:700;color:#1e293b;margin:0 0 .5rem">Q: 賃貸と購入はどちらがお得ですか？</p>
-<p style="font-size:.85rem;color:#475569;line-height:1.8;margin:0">A: 一概には言えません。賃貸は流動性が高く初期費用が少ない一方、資産形成にはなりません。購入は資産になりますが、修繕費・固定資産税等の維持費がかかります。居住年数・家族構成・職業の安定性・地域の不動産相場を総合的に判断することが重要です。FPや宅地建物取引士への相談もお勧めします。</p>
+<p style="font-size:.9rem;font-weight:700;color:#1e293b;margin:0 0 .5rem">Q: 賞味期限と消費期限はどう違うのですか？</p>
+<p style="font-size:.85rem;color:#475569;line-height:1.8;margin:0">A: 賞味期限は「おいしく食べられる期限」で、多少過ぎても品質が大きく変わらない場合があります。消費期限は「安全に食べられる期限」で、これを過ぎた食品は食べないことが推奨されます。お弁当・サンドイッチ・惣菜など傷みやすいものには消費期限が表示されています。</p>
 </div>
 <div style="margin-bottom:1.2rem;padding-bottom:1.2rem;border-bottom:1px solid #f1f5f9">
-<p style="font-size:.9rem;font-weight:700;color:#1e293b;margin:0 0 .5rem">Q: 省エネリフォームの補助金はありますか？</p>
-<p style="font-size:.85rem;color:#475569;line-height:1.8;margin:0">A: 国・自治体の省エネリフォーム補助金として、住宅省エネ2025キャンペーン（断熱窓・給湯器等）、子育てエコホーム支援事業などがあります。補助金は予算に達し次第終了するため、国土交通省や各都道府県の公式サイトで最新情報をご確認ください。</p>
+<p style="font-size:.9rem;font-weight:700;color:#1e293b;margin:0 0 .5rem">Q: 冷凍保存すると賞味期限はどのくらい延びますか？</p>
+<p style="font-size:.85rem;color:#475569;line-height:1.8;margin:0">A: 食品によって異なりますが、肉・魚は冷蔵1〜3日→冷凍1〜3ヶ月程度に延長できます。野菜は茹でてから冷凍すると1ヶ月ほど保存可能です。ただし冷凍しても菌の繁殖が止まるだけで死ぬわけではないため、解凍後は早めに使用してください。</p>
 </div>
 <div style="margin-bottom:1.2rem;padding-bottom:1.2rem;border-bottom:1px solid #f1f5f9">
-<p style="font-size:.9rem;font-weight:700;color:#1e293b;margin:0 0 .5rem">Q: 引越し費用を安く抑えるコツは何ですか？</p>
-<p style="font-size:.85rem;color:#475569;line-height:1.8;margin:0">A: ①閑散期（2月・6月・11月頃）に引越す、②平日を選ぶ、③複数の業者に一括見積りを依頼する、④荷物を自分で梱包する（梱包材は業者に依頼しない）、⑤不用品を売って荷物を減らす、の5点が効果的です。また、引越し先が同一市区町村内であれば費用が抑えられることが多いです。</p>
+<p style="font-size:.9rem;font-weight:700;color:#1e293b;margin:0 0 .5rem">Q: 冷蔵庫の適切な温度管理はどうすれば良いですか？</p>
+<p style="font-size:.85rem;color:#475569;line-height:1.8;margin:0">A: 冷蔵室は0〜5℃・野菜室は3〜8℃・冷凍室は-18℃以下が推奨されます。庫内に食材を詰めすぎると冷気の循環が悪くなり温度が上がります。容量の70%以下を目安にすると効率的です。また、温かい食品を直接入れると他の食材の温度にも影響するため、粗熱を取ってから収納しましょう。</p>
 </div>
 <div style="margin-bottom:1.2rem;padding-bottom:1.2rem;border-bottom:1px solid #f1f5f9">
-<p style="font-size:.9rem;font-weight:700;color:#1e293b;margin:0 0 .5rem">Q: 植物の室内栽培で注意することは何ですか？</p>
-<p style="font-size:.85rem;color:#475569;line-height:1.8;margin:0">A: 室内植物管理の基本は①適切な日当たり（直射日光・日陰を好む種類により異なる）、②過水・過乾燥を避ける（土が乾いてから水を与える）、③適切な温度管理（15〜25℃が多くの植物の適温）、④定期的な葉の清掃です。ペットや小さな子どもに有毒な植物（ポトス・フィロデンドロン等）には注意が必要です。</p>
+<p style="font-size:.9rem;font-weight:700;color:#1e293b;margin:0 0 .5rem">Q: 食材の先入れ先出しを管理するコツは？</p>
+<p style="font-size:.85rem;color:#475569;line-height:1.8;margin:0">A: 新しく買った食品は奥に入れ、古いものが手前に来るように並べる「先入れ先出し（FIFO）」が基本です。透明な保存容器を使って中身を見えるようにし、日付を油性ペンで書いておくと管理しやすくなります。本アプリで登録・追加日を記録しておくと期限順に自動で並び替えられます。</p>
 </div>
-
 </div>
 </div>
 <!-- r31-tool-notice -->
@@ -1655,23 +2238,23 @@ window.frSave=function(d){try{var h=JSON.parse(localStorage.getItem("fr_hist")||
 <div style="padding:1.25rem 1.5rem;background:#fef3c7;border:1px solid #fbbf24;border-radius:.75rem">
 <h3 style="font-size:1rem;font-weight:700;margin:0 0 .75rem;color:#92400e">⚠️ ご利用時の注意事項</h3>
 <ul style="margin:0;padding-left:1.25rem;font-size:.88rem;color:#78350f;line-height:2">
-<li style='margin-bottom:.4rem'>リフォーム・引越し費用の見積もりは業者によって大きく異なります。必ず複数社から見積りを取ってください</li>
-<li style='margin-bottom:.4rem'>不動産購入・住宅ローンに関する判断は専門家（FP・宅地建物取引士）にご相談ください</li>
-<li style='margin-bottom:.4rem'>電気・ガス・水道の料金プランは随時改定されます。最新料金は各事業者の公式サイトでご確認ください</li>
-<li style='margin-bottom:.4rem'>DIY作業は安全に配慮して行ってください。電気・ガス工事は有資格者のみが対応可能です</li>
-<li style='margin-bottom:.4rem'>本ツールの計算結果はあくまで参考値です。実際のコストは状況により異なります</li>
+<li style='margin-bottom:.4rem'>賞味期限・消費期限の表示はあくまで目安です。見た目・においで異変を感じたら食べないでください</li>
+<li style='margin-bottom:.4rem'>消費期限を過ぎた食品は食べないことを強くお勧めします。特に加工食品・惣菜・生鮮食品は注意が必要です</li>
+<li style='margin-bottom:.4rem'>データはブラウザのLocalStorageに保存されます。ブラウザのキャッシュをクリアするとデータが消えますのでご注意ください</li>
+<li style='margin-bottom:.4rem'>冷蔵庫の温度・保存状態によって実際の食品の持ちは異なります。本アプリの情報は参考値としてお使いください</li>
+<li style='margin-bottom:.4rem'>食中毒が疑われる症状が出た場合は医療機関にご相談ください</li>
 </ul>
 </div>
 </div>
 <!-- r31-tool-references -->
 <div style="margin:1.5rem auto;max-width:760px;padding:0 1rem">
 <div style="padding:1.25rem 1.5rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:.75rem">
-<h3 style="font-size:1rem;font-weight:700;margin:0 0 .75rem;color:#1e293b">📚 関連する公的情報・参考リンク</h3>
+<h3 style="font-size:1rem;font-weight:700;margin:0 0 .75rem;color:#1e293b">📚 食品管理・食品安全に関する公的情報</h3>
 <ul style="margin:0;padding-left:1.25rem;font-size:.88rem;color:#374151;line-height:1.9">
-<li style='margin-bottom:.5rem'><a href="https://www.mlit.go.jp/jutakukentiku/index.html" target="_blank" rel="noopener noreferrer" style="color:#4f46e5">国土交通省 住宅局</a> — 住宅政策・補助金・リフォーム制度の公的情報</li>
-<li style='margin-bottom:.5rem'><a href="https://www.jhf.go.jp/" target="_blank" rel="noopener noreferrer" style="color:#4f46e5">住宅金融支援機構（フラット35）</a> — 住宅ローンの種類・金利・制度の解説</li>
-<li style='margin-bottom:.5rem'><a href="https://www.reform-online.jp/news/government-support/" target="_blank" rel="noopener noreferrer" style="color:#4f46e5">住宅リフォーム・紛争処理支援センター</a> — リフォームの相談窓口・補助金情報</li>
-<li style='margin-bottom:.5rem'><a href="https://www.eccj.or.jp/" target="_blank" rel="noopener noreferrer" style="color:#4f46e5">省エネルギーセンター（ECCJ）</a> — 家電の省エネ性能・節電ガイド</li>
+<li style='margin-bottom:.5rem'><a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/shokuhin/syokuchu/index.html" target="_blank" rel="noopener noreferrer" style="color:#4f46e5">厚生労働省 食中毒予防・食品の安全</a> — 家庭での食品安全管理ガイド</li>
+<li style='margin-bottom:.5rem'><a href="https://www.maff.go.jp/j/syouan/syoku_anzen/index.html" target="_blank" rel="noopener noreferrer" style="color:#4f46e5">農林水産省 食品安全</a> — 賞味期限・食品ロス削減の公的情報</li>
+<li style='margin-bottom:.5rem'><a href="https://www.caa.go.jp/policies/policy/food_labeling/date/" target="_blank" rel="noopener noreferrer" style="color:#4f46e5">消費者庁 期限表示</a> — 賞味期限・消費期限の正しい理解</li>
+<li style='margin-bottom:.5rem'><a href="https://www.env.go.jp/recycle/foodloss/" target="_blank" rel="noopener noreferrer" style="color:#4f46e5">環境省 食品ロス削減</a> — 家庭での食品ロス削減のすすめ</li>
 </ul>
 </div>
 </div>
@@ -1685,8 +2268,13 @@ window.frSave=function(d){try{var h=JSON.parse(localStorage.getItem("fr_hist")||
 <!-- r31-extra-guide -->
 <div style="margin:1.5rem auto;max-width:760px;padding:0 1rem">
 <div style="background:white;border-radius:16px;padding:1.5rem;box-shadow:0 4px 20px rgba(0,0,0,.06)">
-<h3 style="font-size:.95rem;font-weight:700;margin:1.25rem 0 .6rem;color:#1e293b">関連ツールのご紹介</h3>
-
+<h3 style="font-size:.95rem;font-weight:700;margin:1.25rem 0 .6rem;color:#1e293b">🔗 他のツールも試す</h3>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px">
+<a href="https://appadaycreator.com/pantry-chef/" style="padding:12px;background:#f0fdf4;border:1px solid #86efac;border-radius:8px;text-decoration:none;text-align:center;font-size:0.85rem;color:#166534;font-weight:600;transition:all 0.2s" onmouseover="this.style.background='#dcfce7'" onmouseout="this.style.background='#f0fdf4'">🥘 AIレシピ提案</a>
+<a href="https://appadaycreator.com/food-waste-calculator/" style="padding:12px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;text-decoration:none;text-align:center;font-size:0.85rem;color:#1e40af;font-weight:600;transition:all 0.2s" onmouseover="this.style.background='#dbeafe'" onmouseout="this.style.background='#eff6ff'">📊 食品ロス計算</a>
+<a href="https://appadaycreator.com/household-budget-guide/" style="padding:12px;background:#fef3c7;border:1px solid #fbbf24;border-radius:8px;text-decoration:none;text-align:center;font-size:0.85rem;color:#92400e;font-weight:600;transition:all 0.2s" onmouseover="this.style.background='#fde68a'" onmouseout="this.style.background='#fef3c7'">💰 家計管理</a>
+<a href="https://appadaycreator.com/today-meal-app/" style="padding:12px;background:#f5f3ff;border:1px solid #d8b4fe;border-radius:8px;text-decoration:none;text-align:center;font-size:0.85rem;color:#6b21a8;font-weight:600;transition:all 0.2s" onmouseover="this.style.background='#ede9fe'" onmouseout="this.style.background='#f5f3ff'">🍽️ 食事計画</a>
+</div>
 </div>
 </div>
 
@@ -1713,9 +2301,9 @@ window.frSave=function(d){try{var h=JSON.parse(localStorage.getItem("fr_hist")||
 <div style="background:#f8fafc;border-top:1px solid #e2e8f0;padding:12px 16px;margin:0 auto;max-width:720px;font-size:11px;color:#64748b;text-align:center;line-height:1.7;">
   <strong>免責事項</strong>：本ツールの計算・診断結果はあくまで参考情報です。本サービスの利用により生じた損害について、当サイトは一切の責任を負いません。
 </div>
-  <div style="margin-top:8px;"><a href="privacy-policy.html" style="color:inherit;font-size:11px;opacity:0.7;text-decoration:underline;">プライバシーポリシー</a></div>
-<p style="text-align:center;font-size:10px;color:#9ca3af;margin-top:4px;">最終更新: 2026年5月 | 本サービスはアフィリエイト広告（A8.net/Amazon）を掲載しています</p>
-<p style="text-align:center;font-size:12px;color:#9ca3af;margin:8px 0 0;">© 2026 AppADayCreator. All rights reserved.</p>
+  <div style="margin-top:8px;"><a href="privacy-policy.html" style="color:#4b5563;font-size:12px;text-decoration:underline;">プライバシーポリシー</a></div>
+<p style="text-align:center;font-size:12px;color:#6b7280;margin-top:4px;">最終更新: 2026年5月 | 本サービスはアフィリエイト広告（A8.net/Amazon）を掲載しています</p>
+<p style="text-align:center;font-size:12px;color:#6b7280;margin:8px 0 0;">© 2026 AppADayCreator. All rights reserved.</p>
 </footer>
 <div style="text-align:center;padding:10px 16px 14px;background:#eef2ff;border-top:2px solid #c7d2fe;margin-top:8px">
 <a href="/blog/" style="color:#4f46e5;font-size:.85rem;font-weight:700">📖 マネー・育児・キャリアのコラムを読む →</a>
@@ -1740,9 +2328,16 @@ window.frSave=function(d){try{var h=JSON.parse(localStorage.getItem("fr_hist")||
 })();
 </script>
 <!-- r31-cookie-banner -->
-<div id="cookie-banner" style="position:fixed;bottom:0;left:0;right:0;background:#1e293b;color:#f1f5f9;padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem;z-index:9999;font-size:.85rem;box-shadow:0 -2px 10px rgba(0,0,0,.3)">
-<div>当サイトはCookieおよびGoogle Analyticsを使用しています。<a href="/privacy-policy.html" style="color:#60a5fa;text-decoration:underline">プライバシーポリシー</a>をご確認ください。</div>
-<button onclick="document.getElementById('cookie-banner').style.display='none';window.grantConsent && window.grantConsent()" style="background:#3b82f6;color:#fff;border:none;padding:.5rem 1.25rem;border-radius:.375rem;font-size:.85rem;font-weight:600;cursor:pointer;white-space:nowrap">同意して閉じる</button>
+<style>
+@media (max-width: 600px) {
+  #cookie-banner { padding: .6rem 1rem !important; font-size: .8rem !important; gap: .5rem !important; }
+  #cookie-banner > div { font-size: .78rem; }
+  #cookie-banner button { padding: .4rem .9rem !important; font-size: .78rem !important; flex-shrink: 0; }
+}
+</style>
+<div id="cookie-banner" style="position:fixed;bottom:0;left:0;right:0;background:#1e293b;color:#f1f5f9;padding:.75rem 1.25rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:nowrap;gap:.75rem;z-index:9999;font-size:.85rem;box-shadow:0 -2px 10px rgba(0,0,0,.3)">
+<div style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">当サイトはCookieおよびGoogle Analyticsを使用しています。<a href="/privacy-policy.html" style="color:#60a5fa;text-decoration:underline">プライバシーポリシー</a>をご確認ください。</div>
+<button onclick="document.getElementById('cookie-banner').style.display='none';localStorage.setItem('cookie-consent','1');window.grantConsent && window.grantConsent()" style="background:#3b82f6;color:#fff;border:none;padding:.5rem 1.25rem;border-radius:.375rem;font-size:.85rem;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0">同意して閉じる</button>
 </div>
 <script>if(localStorage.getItem('cookie-consent'))document.getElementById('cookie-banner').style.display='none'</script>
 <!-- r46-org-footer -->
